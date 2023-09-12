@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<form class="d-flex flex-column align-items-center" method="POST" novalidate>
+	{% csrf_token %}
+	<h1 class="m-2">{% trans "Register" %}</h1>
+    <p>{% blocktrans %}Already have an account? Then please <a href="{{ login }}">sign in</a>.{% endblocktrans %}</p>
+            
+	{% for field in form %}
+        <div class="d-flex flex-column mt-2">
+            <div>{{ field.label_tag }}<span class="text-danger">*</span></div>
+            {{ field }}
+        </div>
+        {% if field.errors %}
+        <div class="">
+            {% for error in field.errors %}
+            <small class="text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endif %}
+	{% endfor %}
+	<input class="btn btn-primary mt-3" type="submit" value="Register" />
+</form>
+{% endblock %}

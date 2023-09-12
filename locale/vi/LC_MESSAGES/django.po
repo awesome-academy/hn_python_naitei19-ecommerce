@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-12 07:48+0700\n"
+"POT-Creation-Date: 2023-09-13 13:57+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,58 +18,75 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: .\templates\base.html:9
+msgid "E-Commerce"
+msgstr ""
+
 #: .\templates\footer.html:46
 msgid "Design by :"
-msgstr ""
-
-#: .\templates\home.html:32 .\templates\home.html:57 .\templates\home.html:82
-msgid "Matching style and class with luxury and comfort."
-msgstr ""
-
-#: .\templates\home.html:100
-msgid "Previous"
-msgstr ""
-
-#: .\templates\home.html:104
-msgid "Next"
-msgstr ""
-
-#: .\templates\home.html:117
-msgid "Categories"
-msgstr ""
-
-#: .\templates\home.html:131
-msgid "All"
-msgstr ""
-
-#: .\templates\home.html:132
-msgid "current"
-msgstr ""
-
-#: .\templates\home.html:136
-msgid "Shirts"
-msgstr ""
-
-#: .\templates\home.html:139
-msgid "Sport wears"
-msgstr ""
-
-#: .\templates\home.html:142
-msgid "Outwears"
 msgstr ""
 
 #: .\templates\navbar.html:22
 msgid "Home"
 msgstr ""
 
-#: .\templates\navbar.html:28
+#: .\templates\navbar.html:29
 msgid "Checkout"
 msgstr ""
 
-#: .\templates\navbar.html:32
+#: .\templates\navbar.html:33
 msgid "Products"
 msgstr ""
 
-#: .\templates\navbar.html:42
+#: .\templates\navbar.html:45
 msgid "Cart"
+msgstr ""
+
+#: .\templates\navbar.html:48
+msgid "Logout"
+msgstr ""
+
+#: .\templates\navbar.html:50 .\templates\registration\login.html:7
+msgid "Login"
+msgstr ""
+
+#: .\templates\navbar.html:51
+msgid "Signup"
+msgstr ""
+
+#: .\templates\registration\login.html:21
+msgid ""
+"\n"
+"          <small class=\"text-danger\">Your username and password didn't "
+"match. Please try again.</small>\n"
+"        "
+msgstr ""
+
+#: .\templates\registration\login.html:28
+msgid ""
+"\n"
+"            <small class=\"text-danger\">Your account doesn't have access to "
+"this page. To proceed,\n"
+"            please login with an account that has access.</small>\n"
+"          "
+msgstr ""
+
+#: .\templates\registration\login.html:36
+msgid "Forgot password?"
+msgstr ""
+
+#: .\templates\registration\login.html:43
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"    <a href=\"%(register)s\">sign up</a> first."
+msgstr ""
+
+#: .\templates\registration\register.html:8
+msgid "Register"
+msgstr ""
+
+#: .\templates\registration\register.html:9
+#, python-format
+msgid "Already have an account? Then please <a href=\"%(login)s\">sign in</a>."
 msgstr ""
