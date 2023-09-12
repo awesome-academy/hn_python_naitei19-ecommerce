@@ -11,10 +11,10 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=150)
     email = models.EmailField()
-    date_joined = models.DateTimeField()
+    date_joined = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 
 class Coupon(models.Model):
