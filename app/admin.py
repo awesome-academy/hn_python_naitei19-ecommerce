@@ -10,8 +10,20 @@ class ItemAdmin(admin.ModelAdmin):
         'price',
         'discount_price',
         'category',
+        'description',
         'overall',
         'purchases'
+    ]
+
+    search_fields = ['title']
+
+    list_display_links = ['image',]
+
+    list_editable = [
+        'title',
+        'price',
+        'discount_price',
+        'description',
     ]
 
     def get_queryset(self, request):
