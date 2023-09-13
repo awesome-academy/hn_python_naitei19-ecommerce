@@ -1,3 +1,5 @@
+import math
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
@@ -81,6 +83,12 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
+
+    def discount_percent(self):
+        return 100 - self.discount_price/self.price * 100
+
+    def round_up_overall(self):
+        return math.ceil(self.overall)
 
 
 class Order(models.Model):

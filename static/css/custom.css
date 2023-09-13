@@ -27,3 +27,78 @@ header,
 .main {
     margin-top: 64px;
 }
+
+img {
+    min-height:100%;
+    min-width:100%;
+}
+
+
+
+/* ---------- Home page ----------*/
+.item-img {
+    height: 230px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+.bookmark-container {
+    position: absolute;
+    right: 0;
+    top: -3px;
+    z-index: 1;
+    text-align: center;
+    padding-top: 10px;
+    padding-right: 2px;
+}
+.bookmark {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    z-index: -1;
+    color: #fcd536
+}
+.bookmark__sale {
+    text-align: center;
+    line-height: .9125rem;
+    text-transform: uppercase;
+
+}
+.sale-number {
+    color: #ee4d2d;
+    font-size: 1rem;
+}
+.sale-text {
+    color: #ffffff;
+    font-size: .75rem;
+}
+.star-rating li {
+	padding: 0;
+}
+.star-rating i {
+	font-size: 14px;
+	color: #ffc000;
+}
+.item-price_before {
+    color: rgba(0,0,0,.54);
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+.item-price_current {
+    font-size: 1rem;
+    color: #ee4d2d;
+}
+.item-title {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    height: 2.4rem;
+    line-height: 1.2rem;
+}
