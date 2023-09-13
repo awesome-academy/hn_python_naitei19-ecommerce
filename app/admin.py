@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Item, Order
+from .models import Item, Order, OrderItem
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -30,7 +30,13 @@ class ItemAdmin(admin.ModelAdmin):
         return super().get_queryset(request).filter(is_deleted=False)
 
 
+class OrderItemInlines(admin.TabularInline):
+    model = OrderItem
+
+
 class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInlines,]
+
     list_display = ['user',
                     'ref_code',
                     'ordered_date',
@@ -53,3 +59,4 @@ class OrderAdmin(admin.ModelAdmin):
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem)
