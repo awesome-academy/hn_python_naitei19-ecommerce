@@ -1,7 +1,145 @@
 {% extends "base.html" %}
-
+{% load humanize %}
 {% load i18n %}
 
 {% block content %}
-  <h1>This is homepage</h1>
+  <main>
+    <div class="container">
+
+      <!--Navbar-->
+      <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
+
+        <!-- Navbar brand -->
+        <span class="navbar-brand">{% trans "Categories:" %}</span>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">{% trans "All" %}
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{% trans "Shirts" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{% trans "Sport wears" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{% trans "Outwears" %}</a>
+            </li>
+
+          </ul>
+          <!-- Links -->
+
+          <form class="form-inline">
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        </div>
+        <!-- Collapsible content -->
+
+      </nav>
+      <!--/.Navbar-->
+
+      <!--Section: Item list-->
+      <section class="text-center mb-4">
+        <div class="row wow fadeIn">
+          {% for item in object_list %}
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="view overlay item-img">
+                {% if item.discount_price %}
+                  <div class="bookmark-container">
+                    <i class="fas fa-bookmark fa-3x bookmark"></i>
+                    <div class="bookmark__sale sale-number">{{ item.discount_percent|floatformat:"0" }}%</div>
+                    <div class="bookmark__sale sale-text">{% trans "Off" %}</div>
+                  </div>
+                {% endif %}
+                <img src="{{ item.image.url }}" class="card-img-top">
+                <a href="{{ item.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <div class="card-body text-center">
+                <a href="{{ item.get_absolute_url }}" class="dark-grey-text item-title">
+                  <h7>{{ item.title }}</h7>
+                </a>
+                <div class="star-rating">
+                  <ul class="list-inline">
+                    {% for i in '12345'|make_list %}
+                      {% with i=i|add:"0" %}
+                      {% if item.overall >= i %}
+                        <li class="list-inline-item"><i class="fas fa-star"></i></li>
+                      {% elif item.round_up_overall >= i %}
+                        <li class="list-inline-item"><i class="fas fa-star-half-alt"></i></li>
+                      {% else %}
+                        <li class="list-inline-item"><i class="far fa-star"></i></li>
+                      {% endif %}
+                      {% endwith %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                <p class="item-price">
+                  {% if item.discount_price %}
+                  <del class="item-price_before">{% trans "$" %}{{ item.price|floatformat:"0"|intcomma }}</del>
+                  <b class="item-price_current">{% trans "$" %}{{ item.discount_price|floatformat:"0"|intcomma }}</b>
+                  {% else %}
+                  <b class="item-price_current">{% trans "$" %}{{ item.price|floatformat:"0"|intcomma }}</b>
+                  {% endif %}
+                </p>
+                <a href="#" class="btn btn-primary rounded-pill btn-sm">{% trans "Add to Cart" %}</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </section>
+      <!--Section: Item list-->
+
+      <!--Pagination-->
+      {% if is_paginated %}
+      <nav class="d-flex justify-content-center wow fadeIn">
+        <ul class="pagination pg-blue">
+
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">{% trans "Previous" %}</span>
+            </a>
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">{% trans "Next" %}</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </main>
+
 {% endblock content %}

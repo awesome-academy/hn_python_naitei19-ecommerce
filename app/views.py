@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-def item_list(request):
-    context = {
-        
-    }
-    return render(request, "home.html", context)
+from .models import Item
+
+
+class HomeView(ListView):
+    model = Item
+    paginate_by = 10
+    template_name = "home.html"
