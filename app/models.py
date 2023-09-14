@@ -3,6 +3,7 @@ import math
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
+from django.shortcuts import reverse
 
 from app import constants as const
 
@@ -89,6 +90,11 @@ class Item(models.Model):
 
     def round_up_overall(self):
         return math.ceil(self.overall)
+
+    def get_absolute_url(self):
+        return reverse("app:product", kwargs={
+            'slug': self.slug
+        })
 
 
 class Order(models.Model):
