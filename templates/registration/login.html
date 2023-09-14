@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+  <div class="d-flex flex-column align-items-center px-5 py-5">
+    <h1>{% trans "Login" %}</h1>
+    <form class="login d-flex flex-column align-items-center" method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <table>
+        <tr>
+          <td>{{ form.username.label_tag }}</td>
+          <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+          <td>{{ form.password.label_tag }}</td>
+          <td>{{ form.password }}</td>
+        </tr>
+      </table>
+      {% if form.errors %}
+        {% blocktranslate %}
+          <small class="text-danger">Your username and password didn't match. Please try again.</small>
+        {% endblocktranslate %}
+      {% endif %}
+
+      {% if next %}
+        {% if user.is_authenticated %}
+          {% blocktranslate %}
+            <small class="text-danger">Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</small>
+          {% endblocktranslate %}
+        {% endif %}
+      {% endif %}
+
+      {# Assumes you setup the password_reset view in your URLconf #}
+      <a class="mt-2" href="{% url 'password_reset' %}">{% translate 'Forgot password?' %}</a>
+
+      <input class="btn btn-primary" type="submit" value="login">
+      
+      <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+    <p class="mt-2">{% blocktrans %}If you have not created an account yet, then please
+    <a href="{{ register }}">sign up</a> first.{% endblocktrans %}</p>
+  </div>
+{% endblock %}
