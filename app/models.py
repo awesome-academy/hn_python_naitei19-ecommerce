@@ -2,8 +2,10 @@ import math
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.forms import ValidationError
 from django_countries.fields import CountryField
 from django.shortcuts import reverse
+from django.utils.translation import gettext as _
 
 from app import constants as const
 
@@ -23,11 +25,15 @@ class User(AbstractUser):
 class Coupon(models.Model):
     """Model representing a coupon."""
 
-    code = models.CharField(max_length=15)
+    code = models.CharField(max_length=15, unique=True)
     amount = models.FloatField()
 
     def __str__(self):
         return self.code
+    
+    def clean(self):
+        if self.amount <= 0:
+            raise ValidationError(_("Amount must be greater than 0."))
 
 
 class Payment(models.Model):
