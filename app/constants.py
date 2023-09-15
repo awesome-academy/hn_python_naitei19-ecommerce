@@ -1,9 +1,12 @@
+from django.utils.translation import gettext as _
+
 CATEGORY_CHOICES = (
-    (0, 'Portable'),
-    (1, 'Touchscreen'),
-    (2, 'Work'),
-    (3, 'Business'),
-    (4, 'Student')
+    (0, _('Trousers')),
+    (1, _('T-shirt')),
+    (2, _('Jacket')),
+    (3, _('Sportswear')),
+    (4, _('Sweater')),
+    (5, _('Suit'))
 )
 
 LABEL_CHOICES = (
