@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-13 13:57+0700\n"
+"POT-Creation-Date: 2023-09-15 09:07+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: .\app\views.py:33
+msgid "You have singed up successfully."
+msgstr ""
+
 #: .\templates\base.html:9
 msgid "E-Commerce"
 msgstr ""
 
 #: .\templates\footer.html:46
 msgid "Design by :"
+msgstr ""
+
+#: .\templates\home.html:13
+msgid "Categories:"
+msgstr ""
+
+#: .\templates\home.html:27
+msgid "All"
+msgstr ""
+
+#: .\templates\home.html:32
+msgid "Shirts"
+msgstr ""
+
+#: .\templates\home.html:35
+msgid "Sport wears"
+msgstr ""
+
+#: .\templates\home.html:38
+msgid "Outwears"
+msgstr ""
+
+#: .\templates\home.html:66
+msgid "Off"
+msgstr ""
+
+#: .\templates\home.html:95 .\templates\home.html:96 .\templates\home.html:98
+#: .\templates\product.html:43 .\templates\product.html:44
+#: .\templates\product.html:46
+msgid "$"
+msgstr ""
+
+#: .\templates\home.html:101 .\templates\product.html:56
+msgid "Add to Cart"
+msgstr ""
+
+#: .\templates\home.html:120
+msgid "Previous"
+msgstr ""
+
+#: .\templates\home.html:135
+msgid "Next"
 msgstr ""
 
 #: .\templates\navbar.html:22
@@ -54,6 +100,14 @@ msgstr ""
 msgid "Signup"
 msgstr ""
 
+#: .\templates\product.html:51
+msgid "Description"
+msgstr ""
+
+#: .\templates\product.html:71
+msgid "Product Ratings"
+msgstr ""
+
 #: .\templates\registration\login.html:21
 msgid ""
 "\n"
@@ -80,6 +134,63 @@ msgstr ""
 msgid ""
 "If you have not created an account yet, then please\n"
 "    <a href=\"%(register)s\">sign up</a> first."
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:5
+#: .\templates\registration\password_reset_complete.html:10
+msgid "Password reset complete"
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:11
+msgid "Your new password has been set. You can log in now on the "
+msgstr ""
+
+#: .\templates\registration\password_reset_complete.html:11
+msgid "log in page"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:5
+msgid "Enter new password"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:11
+msgid "Set a new password!"
+msgstr ""
+
+#: .\templates\registration\password_reset_confirm.html:20
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:5
+msgid "Email Sent"
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:10
+msgid "Check your inbox."
+msgstr ""
+
+#: .\templates\registration\password_reset_done.html:11
+msgid ""
+"We've emailed you instructions for setting your password. You should receive "
+"the email shortly!"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:5
+msgid "Forgot Your Password?"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:9
+msgid "Forgot your password?"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:10
+msgid "Enter your email address below, and we\\"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:15
+msgid "Send me instructions!"
 msgstr ""
 
 #: .\templates\registration\register.html:8
