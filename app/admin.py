@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Item, Order, OrderItem
+from .models import Item, Order, OrderItem, Coupon
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -56,7 +56,18 @@ class OrderAdmin(admin.ModelAdmin):
         'ref_code'
     ]
 
+class CouponAdmin(admin.ModelAdmin):
+
+    list_display = ['code',
+                    'amount',
+                    ]
+
+    search_fields = [
+        'code',
+        'amount'
+    ]
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
+admin.site.register(Coupon, CouponAdmin)
