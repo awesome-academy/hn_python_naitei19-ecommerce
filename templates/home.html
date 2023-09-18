@@ -98,7 +98,7 @@
                   <b class="item-price_current">{% trans "$" %}{{ item.price|floatformat:"0"|intcomma }}</b>
                   {% endif %}
                 </p>
-                <a href="#" class="btn btn-primary rounded-pill btn-sm">{% trans "Add to Cart" %}</a>
+                <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary rounded-pill btn-sm">{% trans "Add to Cart" %}</a>
               </div>
             </div>
           </div>

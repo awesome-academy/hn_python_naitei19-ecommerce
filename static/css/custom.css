@@ -157,3 +157,15 @@ img {
     white-space: nowrap;
 }
 /* --------------------------------------*/
+
+.btn-link {
+    border: none !important;
+    outline: none !important;
+    background: none;
+    cursor: pointer;
+    color: black;
+    padding: 0;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: inherit;
+}

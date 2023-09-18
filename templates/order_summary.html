@@ -1,0 +1,73 @@
+{% extends "base.html" %} 
+{% load i18n %}
+{% load humanize %}
+{% load static %}
+{% load djmoney %}
+{% money_localize money on %}
+
+{% block content %}
+<main>
+
+  <div class="container">
+    <div class="table-responsive text-nowrap">
+      <h2>{% trans "Order Summary" %}</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans "Item title" %}</th>
+            <th scope="col">{% trans "Price" %}</th>
+            <th scope="col">{% trans "Quantity" %}</th>
+            <th scope="col">{% trans "Total Item Price" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order_item in object %}
+          <tr class="{{ order_item.item.slug }}" data-csrf="{{ csrf_token }}">
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ order_item.item.title }}</td>
+            <td>{{ order_item.price }}</td>
+            <td>
+              <button class="btn-link" onclick="remove_single_item('{{order_item.item.slug}}')" method="post" ><i class="fas fa-minus mr-2"></i></button>
+                <span id="item_quantity_{{order_item.item.slug}}">{{ order_item.quantity }}</span>
+              <button class="btn-link" onclick="add_item('{{order_item.item.slug}}')" method="post" ><i class="fas fa-plus ml-2"></i></button>
+            </td>
+            <td>
+              <span id="total_item_price_{{order_item.item.slug}}">{% money_localize order_item.get_final_price 'USD'%}</span>
+                <span class="badge badge-primary">{% trans "Saving " %}{% money_localize order_item.get_amount_saved 'USD'%}</span>
+                  <button style="color: red " class="btn-link float-right" onclick="remove_item('{{order_item.item.slug}}')" method="post" ><i class="fas fa-trash"></i></button>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">{% trans "Your cart is empty" %}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="4"><b>{% trans "Coupon" %}</b></td>
+            <td><b>- {% money_localize coupon 'USD'%}</b></td>
+          </tr>
+          <tr>
+            <td colspan="4"><b>{% trans "Order Total" %}</b></td>
+            <td><b id="cart_total">{% money_localize cart_total 'USD'%}</b></td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <a class="btn btn-warning float-right ml-2" href="/checkout/"
+                >{% trans "Proceed to checkout" %}</a
+              >
+              <a class="btn btn-primary float-right" href="/"
+                >{% trans "Continue shopping" %}</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/cart_handler.js' %}"></script>
+</main>
+
+{% endblock content %}

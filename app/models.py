@@ -30,7 +30,7 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
-    
+
     def clean(self):
         if self.amount <= 0:
             raise ValidationError(_("Amount must be greater than 0."))
@@ -102,6 +102,21 @@ class Item(models.Model):
             'slug': self.slug
         })
 
+    def get_add_to_cart_url(self):
+        return reverse("app:add-to-cart", kwargs={
+            'slug': self.slug
+        })
+
+    def get_remove_from_cart_url(self):
+        return reverse("app:remove-from-cart", kwargs={
+            'slug': self.slug
+        })
+
+    def get_remove_single_item_from_cart_url(self):
+        return reverse("app:remove-single-item-from-cart", kwargs={
+            'slug': self.slug
+        })
+
 
 class Order(models.Model):
     """Model representing an order."""
@@ -131,6 +146,7 @@ class Order(models.Model):
     payment = models.ForeignKey(
         Payment, on_delete=models.SET_NULL, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now=True)
+    amount = models.FloatField(default=0)
 
     def __str__(self):
         return self.user.username
@@ -139,13 +155,32 @@ class Order(models.Model):
 class OrderItem(models.Model):
     """Model represent a item in order."""
 
-    price = models.FloatField()
+    price = models.FloatField(default=0)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
+
+    def get_single_price(self):
+        if self.item.discount_price:
+            return self.item.discount_price
+        return self.item.price
+
+    def get_total_item_price(self):
+        return self.quantity * self.item.price
+
+    def get_total_discount_item_price(self):
+        return self.quantity * self.item.discount_price
+
+    def get_amount_saved(self):
+        return (self.item.price - self.item.discount_price) * self.quantity
+
+    def get_final_price(self):
+        if self.item.discount_price:
+            return self.get_total_discount_item_price()
+        return self.get_total_item_price()
 
 
 class Refund(models.Model):
