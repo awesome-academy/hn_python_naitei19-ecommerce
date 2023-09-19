@@ -189,3 +189,7 @@ img {
     font-family: inherit;
     font-size: inherit;
 }
+
+.country-select-flag {
+    display: none;
+}

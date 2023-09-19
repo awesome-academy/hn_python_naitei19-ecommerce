@@ -12,3 +12,10 @@ def float_or_none(x: str):
         return float(x)
     except (TypeError, ValueError):
         return None
+
+def is_valid_form(values):
+    valid = True
+    for field in values:
+        if field == '':
+            valid = False
+    return valid
