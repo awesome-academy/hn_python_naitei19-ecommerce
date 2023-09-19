@@ -12,11 +12,76 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import RegisterForm
 from .models import Item, Order, OrderItem
+from .constants import CATEGORY_CHOICES
+from .utils import int_or_none, float_or_none
 
 
 class HomeView(ListView):
+    SORT_CHOICES = [
+        {
+            'text': _('Price: low to high'),
+            'func': lambda x: x.discount_price if x.discount_price else x.price},
+        {
+            'text': _('Price: high to low'),
+            'func': lambda x: -x.discount_price if x.discount_price else -x.price},
+        {
+            'text': _('% Discount'),
+            'func': lambda x: (x.discount_price if x.discount_price else x.price)/x.price * 100 - 100}
+    ]
+    DEFAULT_SORT = lambda x: -x.overall
+
     model = Item
     paginate_by = 10
+
+    def get_queryset(self):
+        params = self.request.GET
+        category_option = params.get('category')
+        price_from = params.get('price_from')
+        price_to = params.get('price_to')
+        star_from = params.get('star_from')
+        star_to = params.get('star_to')
+        sort = params.get('sort')
+        product_name = params.get('name')
+
+        filter_options = {}
+        if category_option:
+            filter_options.update(category=category_option)
+        if price_from:
+            filter_options.update(price__gte=price_from)
+        if price_to:
+            filter_options.update(price__lte=price_to)
+        if star_from:
+            filter_options.update(overall__gte=star_from)
+        if star_to:
+            filter_options.update(overall__lte=star_to)
+        if product_name:
+            filter_options.update(title__icontains=product_name)
+
+        sort_option = self.__class__.DEFAULT_SORT
+        if sort:
+            sort_option = self.SORT_CHOICES[int(sort)]['func']
+
+        result = Item.objects.filter(**filter_options)
+        result = sorted(result, key=sort_option)
+
+        return result
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['category_choices'] = CATEGORY_CHOICES
+        context['sort_choices'] = self.SORT_CHOICES
+
+        params = self.request.GET
+        context['category_option'] = int_or_none(params.get('category'))
+        context['price_from'] = float_or_none(params.get('price_from'))
+        context['price_to'] = float_or_none(params.get('price_to'))
+        context['star_from'] = float_or_none(params.get('star_from'))
+        context['star_to'] = float_or_none(params.get('star_to'))
+        context['sort'] = int_or_none(params.get('sort'))
+        context['product_name'] = params.get('name')
+
+        return context
+
     template_name = "home.html"
 
 
@@ -112,7 +177,6 @@ def remove_from_cart(request, slug):
         if order_query.exists():
             order = order_query[0]
             order_item = OrderItem.objects.filter(order=order, item=item)
-            print(order.amount)
             if order_item:
                 for cart_item in order_item:
                     order.amount -= cart_item.get_final_price()

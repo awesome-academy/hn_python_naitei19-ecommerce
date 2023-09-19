@@ -6,51 +6,107 @@
   <main>
     <div class="container">
 
-      <!--Navbar-->
+      <!--Search and filter-->
       <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
-
-        <!-- Navbar brand -->
-        <span class="navbar-brand">{% trans "Categories:" %}</span>
-
-        <!-- Collapse button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Collapsible content -->
         <div class="collapse navbar-collapse" id="basicExampleNav">
-
-          <!-- Links -->
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">{% trans "All" %}
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">{% trans "Shirts" %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">{% trans "Sport wears" %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">{% trans "Outwears" %}</a>
-            </li>
-
-          </ul>
-          <!-- Links -->
-
           <form class="form-inline">
-            <div class="md-form my-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+            <!--Category filtering-->
+            <select name="category" class="form-select ml-auto category-filter">
+              <option value="">{% trans "Categories" %}</option>
+              {% for category in category_choices %}
+                {% if category.0 == category_option %}
+                  <option selected value="{{ category.0 }}">{{ category.1 }}</option>
+                {% else %}
+                  <option value="{{ category.0 }}">{{ category.1 }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <!--End category filtering-->
+
+            <!--Price filtering-->
+            <div class="dropdown">
+              <button class="btn dropdown-toggle" type="button" id="dropdownPriceButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% trans "Price" %"
+              </button>
+              <div class="dropdown-menu price-filter-menu" aria-labelledby="dropdownPriceButton">
+                <div class="dropdown-item">
+                  <div class="input-group mb-3">
+                    <input name="price_from" type="number" class="form-control"
+                           placeholder="{% trans 'From' %}" aria-describedby="price-from" value="{{price_from}}">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="price-from">$</span>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input name="price_to" type="number" class="form-control"
+                           placeholder="{% trans 'To' %}" aria-describedby="price-to" value="{{price_to}}">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="price-to">$</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <!--End price filtering-->
+
+            <!--Star filtering-->
+            <div class="dropdown">
+              <button class="btn dropdown-toggle" type="button" id="dropdownStarButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% trans "Star" %}
+              </button>
+              <div class="dropdown-menu price-filter-menu" aria-labelledby="dropdownStarButton">
+                <div class="dropdown-item">
+                  <div class="input-group mb-3">
+                    <input name="star_from" type="number" min="1" max="5"
+                           class="form-control" placeholder="{% trans 'From' %}" aria-describedby="star-from"
+                           value="star_from">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="star-from">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input name="star_to" type="number" min="1" max="5" class="form-control"
+                           placeholder="{% trans 'To' %}" aria-describedby="star-to" value="star_to">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="star-to">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--End price filtering-->
+
+            <!--Sorting-->
+            <select name="sort" class="form-select ml-auto category-filter">
+              <option value="">{% trans "Sort" %}</option>
+              {% for option in sort_choices %}
+                {% if forloop.counter0 == sort %}
+                  <option value="{{forloop.counter0}}" selected>{{option.text}}</option>
+                {% else %}
+                  <option value="{{forloop.counter0}}">{{option.text}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <!--End sorting-->
+
+            <!--Name-->
+            <div class="md-form my-0">
+              <input name="name" class="form-control mr-sm-2" type="text"
+                     placeholder="{% trans 'Product name' %}" value="{% if product_name %} {{product_name}} {% endif %}">
+            </div>
+            <!--End name-->
+
+            <button type="submit" class="btn btn-primary float-right rounded-pill">{% trans "Search" %}</button>
           </form>
         </div>
-        <!-- Collapsible content -->
-
       </nav>
-      <!--/.Navbar-->
+      <!--/.Search and filter-->
+
 
       <!--Section: Item list-->
       <section class="text-center mb-4">
