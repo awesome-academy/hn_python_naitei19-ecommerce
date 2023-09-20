@@ -39,3 +39,7 @@ PAYMENT_STATUS = (
     (0, 'None'),
     (1, 'Paid')
 )
+
+PAYMENT_CHOICES = (
+    ('S', 'Credit/Debit Card'),
+)
