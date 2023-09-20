@@ -16,8 +16,8 @@ from django.contrib.auth import logout
 
 from .constants import CATEGORY_CHOICES, ORDER_STATUS
 from .utils import int_or_none, float_or_none, is_valid_form
-from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm
-from .models import Address, Coupon, Item, Order, OrderItem, Payment
+from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm, ReviewForm
+from .models import Address, Coupon, Item, Order, OrderItem, Payment, Review
 
 
 class HomeView(ListView):
@@ -32,7 +32,7 @@ class HomeView(ListView):
             'text': _('% Discount'),
             'func': lambda x: (x.discount_price if x.discount_price else x.price)/x.price * 100 - 100}
     ]
-    DEFAULT_SORT = lambda x: -x.overall
+    def DEFAULT_SORT(x): return -x.overall
 
     model = Item
     paginate_by = 10
@@ -228,6 +228,7 @@ def remove_single_item_from_cart(request, slug):
         messages.info(request, _('You do not have an active order.'))
         return redirect('app:order-summary')
 
+
 class CheckoutView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         try:
@@ -243,8 +244,8 @@ class CheckoutView(LoginRequiredMixin, View):
                 'form': form,
                 'couponform': CouponForm(),
                 'order': order,
-                'order_items' : order_items,
-                'total' : order.amount - coupon,
+                'order_items': order_items,
+                'total': order.amount - coupon,
                 'DISPLAY_COUPON_FORM': True
             }
 
@@ -275,19 +276,19 @@ class CheckoutView(LoginRequiredMixin, View):
         try:
             order = Order.objects.get(user=self.request.user, order_status=0)
             if form.is_valid():
-                
+
                 self.process_shipping_address(form, order)
                 self.process_billing_address(form, order)
                 return self.redirect_payment(form)
-            
+
             else:
                 return messages.info(
                     self.request, _("Please fill in the required fields"))
 
         except ObjectDoesNotExist:
-            messages.warning(self.request, _("You do not have an active order"))
+            messages.warning(self.request, _(
+                "You do not have an active order"))
             return redirect("app:order-summary")
-        
 
     def process_shipping_address(self, form, order):
         use_default_shipping = form.cleaned_data.get('use_default_shipping')
@@ -324,7 +325,8 @@ class CheckoutView(LoginRequiredMixin, View):
                 order.shipping_address = shipping_address
                 order.save()
 
-                set_default_shipping = form.cleaned_data.get('set_default_shipping')
+                set_default_shipping = form.cleaned_data.get(
+                    'set_default_shipping')
                 if set_default_shipping:
                     shipping_address.default = True
                     shipping_address.save()
@@ -367,7 +369,8 @@ class CheckoutView(LoginRequiredMixin, View):
                 order.billing_address = billing_address
                 order.save()
 
-                set_default_billing = form.cleaned_data.get('set_default_billing')
+                set_default_billing = form.cleaned_data.get(
+                    'set_default_billing')
                 if set_default_billing:
                     billing_address.default = True
                     billing_address.save()
@@ -384,6 +387,7 @@ class CheckoutView(LoginRequiredMixin, View):
                 self.request, _("Invalid payment option selected"))
             return redirect("app:checkout")
 
+
 @login_required
 @csrf_exempt
 def get_coupon(request, code):
@@ -393,6 +397,7 @@ def get_coupon(request, code):
     except ObjectDoesNotExist:
         messages.info(request, _("This coupon does not exist"))
         return redirect("app:checkout")
+
 
 class AddCouponView(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
@@ -407,12 +412,15 @@ class AddCouponView(LoginRequiredMixin, View):
                 messages.success(self.request, _("Successfully added coupon"))
                 return redirect("app:checkout")
             except ObjectDoesNotExist:
-                messages.info(self.request, _("You do not have an active order"))
+                messages.info(self.request, _(
+                    "You do not have an active order"))
                 return redirect("app:checkout")
+
 
 @csrf_exempt
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+
 
 class PaymentView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -427,8 +435,8 @@ class PaymentView(LoginRequiredMixin, View):
             context = {
                 'order': order,
                 'DISPLAY_COUPON_FORM': False,
-                'order_items' : order_items,
-                'total' : order.amount - coupon,
+                'order_items': order_items,
+                'total': order.amount - coupon,
             }
             return render(self.request, "payment.html", context)
         else:
@@ -447,7 +455,6 @@ class PaymentView(LoginRequiredMixin, View):
                 coupon = 0
             else:
                 coupon = order.coupon.amount
-
 
             try:
                 with transaction.atomic():
@@ -476,9 +483,11 @@ class PaymentView(LoginRequiredMixin, View):
         messages.warning(self.request, _("Invalid data received"))
         return redirect("/payment/card/")
 
+
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, 'registration/profile.html')
+
 
 class UserDeleteView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
@@ -558,3 +567,32 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         if self.object.order_status == 3:
             context['can_rate'] = True
         return context
+
+
+@login_required
+def review(request, slug):
+    if request.method == 'GET':
+        form = ReviewForm()
+        item = get_object_or_404(Item, slug=slug)
+        return render(request, 'review.html', {'form': form, 'item': item})
+    else:
+        messages.info(request, _('Failed to get item'))
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        rating = request.POST.get('rating')
+        description = request.POST.get('review')
+        item = get_object_or_404(Item, slug=slug)
+        review_query = Review.objects.filter(
+            user=request.user, item=item).first()
+        if (review_query):
+            review_query.description = description
+            review_query.overall = rating
+            review_query.save()
+        else:
+            new_review = Review.objects.create(
+                user=request.user, item=item, description=description, overall=rating)
+            new_review.save()
+        return redirect('/')
+    else:
+        messages.info(request, _('Failed to get review'))
+    return redirect('/')

@@ -1,0 +1,50 @@
+{% extends "base.html" %} 
+{% load i18n %} 
+{% load humanize %} 
+{% load static %}
+
+{% block content%}
+<main>
+  <form action="#" class="review_form" method="post" novalidate>
+    {% csrf_token %}
+    <div class="form_container">
+      <div class="review_header">
+        <h3>{% trans 'Please leave us some comments on this item !' %}</h3>
+      </div>
+      <div class="review_content">
+        <input
+          class="name_input"
+          type="text"
+          placeholder="Your Name"
+          pattern="^[A-Za-z0-9]{3,16}$"
+          required
+        />
+        <input
+          className="email_input"
+          type="email"
+          placeholder="Email Address"
+          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+          required
+        />
+        {{form.review}}
+        <div class="rating_header">
+          <h5>{% trans 'How would you rate this product?' %}</h5>
+        </div>
+        <div class="rating">
+          {% for choice in form.overall reversed %}
+          <input
+            type="radio"
+            name="rating"
+            id="{{ forloop.revcounter }}"
+            value="{{ forloop.revcounter }}"
+          /><label for="{{ forloop.revcounter }}">☆</label>
+          {% endfor %}
+        </div>
+        <button class="btn btn-primary rounded-pill" type="submit">
+          {% trans 'Submit' %}
+        </button>
+      </div>
+    </div>
+  </form>
+</main>
+{% endblock content %}
