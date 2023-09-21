@@ -17,7 +17,7 @@ from django.contrib.auth import logout
 from .constants import CATEGORY_CHOICES, ORDER_STATUS
 from .utils import int_or_none, float_or_none, is_valid_form
 from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm
-from .models import Address, Coupon, Item, Order, OrderItem, Payment
+from .models import Address, Coupon, Item, Order, OrderItem, Payment, Refund
 
 
 class HomeView(ListView):
@@ -551,10 +551,63 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         order_item = OrderItem.objects.filter(order=self.object)
         context['order_item_list'] = order_item
         context['order_status'] = ORDER_STATUS[1:4]
-        context['order_progress'] = self.progress[self.object.order_status]
+        if self.object.order_status != 4:
+            context['order_progress'] = self.progress[self.object.order_status]
         context['coupon'] = self.object.coupon if self.object.coupon else 0
         context['order_total'] = self.object.amount - context['coupon']
         context['current_status'] = ORDER_STATUS[self.object.order_status][1]
         if self.object.order_status == 3:
             context['can_rate'] = True
         return context
+
+
+class OrderCancellationView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(
+                user=self.request.user,
+                order_status=1,
+                pk=self.kwargs['pk']
+            )
+            context = {
+                'order_id': order.id,
+                'order_ref': order.ref_code
+            }
+            return render(self.request, 'cancel_order.html', context)
+        except ObjectDoesNotExist:
+            messages.info(self.request,
+                          _("The order does not exist or you do not have access"))
+            return redirect("app:order-list")
+
+    def post(self, *args, **kwargs):
+        # TODO refund
+        try:
+            params = self.request.POST
+
+            order = Order.objects.get(
+                user=self.request.user,
+                order_status=1,
+                pk=self.kwargs['pk']
+            )
+
+            print('run to here')
+
+            Refund.objects.create(
+                order=order,
+                reason=params.get('cancel_reason'),
+                email=params.get('email'),
+                accepted=True
+            )
+
+            order.order_status = 4
+            order.refund_status = 2
+
+            order.save()
+
+            messages.info(self.request,
+                          _("Cancel order successfully!"))
+        except ObjectDoesNotExist:
+            messages.info(self.request,
+                          _("The order does not exist or you do not have access"))
+
+        return redirect("app:order-list")
