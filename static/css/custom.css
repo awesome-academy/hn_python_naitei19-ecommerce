@@ -197,3 +197,22 @@ img {
 .avt-img {
     width: 145px;
 }
+
+
+
+/* ---------- Order-list and order-detail ----------*/
+.order-card {
+    border-radius: 10px;
+}
+.hl-text {
+    color: #ee4d2d;
+}
+.progress-ctn {
+    height: 6px;
+    border-radius: 16px;
+}
+.pg-bar {
+    border-radius: 16px;
+    background-color: #ee4d2d;
+}
+/* -------------------------------------------------*/
