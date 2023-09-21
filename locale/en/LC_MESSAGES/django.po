@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-19 20:08+0700\n"
+"POT-Creation-Date: 2023-09-20 15:48+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,84 +54,88 @@ msgstr ""
 msgid "Amount must be greater than 0."
 msgstr ""
 
-#: .\app\views.py:25
+#: .\app\views.py:26
 msgid "Price: low to high"
 msgstr ""
 
-#: .\app\views.py:28
+#: .\app\views.py:29
 msgid "Price: high to low"
 msgstr ""
 
-#: .\app\views.py:31
+#: .\app\views.py:32
 msgid "% Discount"
 msgstr ""
 
-#: .\app\views.py:114 .\app\views.py:269 .\app\views.py:287 .\app\views.py:409
+#: .\app\views.py:115 .\app\views.py:270 .\app\views.py:288 .\app\views.py:410
 msgid "You do not have an active order"
 msgstr ""
 
-#: .\app\views.py:128
+#: .\app\views.py:129
 msgid "You have singed up successfully."
 msgstr ""
 
-#: .\app\views.py:170
+#: .\app\views.py:171
 msgid "The item was added to your cart."
 msgstr ""
 
-#: .\app\views.py:192 .\app\views.py:227
+#: .\app\views.py:193 .\app\views.py:228
 msgid "You do not have an active order."
 msgstr ""
 
-#: .\app\views.py:224
+#: .\app\views.py:225
 msgid "Item was not in your cart."
 msgstr ""
 
-#: .\app\views.py:284
+#: .\app\views.py:285
 msgid "Please fill in the required fields"
 msgstr ""
 
-#: .\app\views.py:305
+#: .\app\views.py:306
 msgid "No default shipping address available"
 msgstr ""
 
-#: .\app\views.py:332
+#: .\app\views.py:333
 msgid "Please fill in the required shipping address fields"
 msgstr ""
 
-#: .\app\views.py:348
+#: .\app\views.py:349
 msgid "No default billing address available"
 msgstr ""
 
-#: .\app\views.py:375
+#: .\app\views.py:376
 msgid "Please fill in the required billing address fields"
 msgstr ""
 
-#: .\app\views.py:383
+#: .\app\views.py:384
 msgid "Invalid payment option selected"
 msgstr ""
 
-#: .\app\views.py:393
+#: .\app\views.py:394
 msgid "This coupon does not exist"
 msgstr ""
 
-#: .\app\views.py:406
+#: .\app\views.py:407
 msgid "Successfully added coupon"
 msgstr ""
 
-#: .\app\views.py:435
+#: .\app\views.py:436
 msgid "You have not added a billing address"
 msgstr ""
 
-#: .\app\views.py:467
+#: .\app\views.py:468
 msgid "Your order was successful!"
 msgstr ""
 
-#: .\app\views.py:472
+#: .\app\views.py:473
 msgid "A serious error occurred. We have been notifed."
 msgstr ""
 
-#: .\app\views.py:475
+#: .\app\views.py:476
 msgid "Invalid data received"
+msgstr ""
+
+#: .\app\views.py:489
+msgid "Account has been successfully deleted."
 msgstr ""
 
 #: .\templates\base.html:9
@@ -272,15 +276,19 @@ msgstr ""
 msgid "Cart"
 msgstr ""
 
-#: .\templates\navbar.html:40
+#: .\templates\navbar.html:43
+msgid "Account"
+msgstr ""
+
+#: .\templates\navbar.html:46
 msgid "Logout"
 msgstr ""
 
-#: .\templates\navbar.html:42 .\templates\registration\login.html:7
+#: .\templates\navbar.html:48 .\templates\registration\login.html:7
 msgid "Login"
 msgstr ""
 
-#: .\templates\navbar.html:43
+#: .\templates\navbar.html:49
 msgid "Signup"
 msgstr ""
 
@@ -447,6 +455,42 @@ msgstr ""
 
 #: .\templates\registration\password_reset_form.html:15
 msgid "Send me instructions!"
+msgstr ""
+
+#: .\templates\registration\profile.html:8
+msgid "Profile"
+msgstr ""
+
+#: .\templates\registration\profile.html:20
+msgid "Joined date : "
+msgstr ""
+
+#: .\templates\registration\profile.html:21
+msgid "Change password"
+msgstr ""
+
+#: .\templates\registration\profile.html:25
+msgid "Delete My Account"
+msgstr ""
+
+#: .\templates\registration\profile.html:38
+msgid "First name"
+msgstr ""
+
+#: .\templates\registration\profile.html:47
+msgid "Last name"
+msgstr ""
+
+#: .\templates\registration\profile.html:56
+msgid "Email"
+msgstr ""
+
+#: .\templates\registration\profile.html:65
+msgid "Username"
+msgstr ""
+
+#: .\templates\registration\profile.html:74
+msgid "Joined date"
 msgstr ""
 
 #: .\templates\registration\register.html:8

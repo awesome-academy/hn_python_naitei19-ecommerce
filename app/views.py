@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
+from django.contrib.auth import logout
 
 from .constants import CATEGORY_CHOICES
 from .utils import int_or_none, float_or_none, is_valid_form
@@ -475,3 +476,15 @@ class PaymentView(LoginRequiredMixin, View):
         messages.warning(self.request, _("Invalid data received"))
         return redirect("/payment/card/")
 
+class ProfileView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'registration/profile.html')
+
+class UserDeleteView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        user.is_active = False
+        user.save()
+        logout(request)
+        messages.success(request, _("Account has been successfully deleted."))
+        return redirect('app:home')

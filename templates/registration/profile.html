@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="my-5 h2 text-center">{% trans "Profile" %}</h2>
+    <div class="main-body">
+        <div class="row gutters-sm">
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                  <div class="avt-img">
+                    <img src="{% static 'img/User-avatar.svg' %}" alt="User">
+                  </div>
+                  <div class="mt-3">
+                    <h4>{{ user.username }}</h4>
+                    <p class="text-secondary mb-1">{% trans "Joined date : " %}{{ user.date_joined|date:'Y-m-d H:i' }}</p>
+                    <button class="btn btn-primary">{% trans "Change password" %}</button>
+                    
+                    <form method="post" action="{% url 'app:profile-delete' %}">
+                      {% csrf_token %}
+                      <button class="btn btn-danger" type="submit btn btn-danger">{% trans "Delete My Account" %}</button>
+                  </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-md-8">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">{% trans "First name" %}</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ user.first_name }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">{% trans "Last name" %}</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ user.last_name }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">{% trans "Email" %}</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ user.email }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">{% trans "Username" %}</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ user.username }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">{% trans "Joined date" %}</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ user.date_joined|date:'Y-m-d H:i' }}
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <a class="btn btn-info " target="__blank" href="">{% trans "Edit" %}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+    </div>
+{% endblock %}

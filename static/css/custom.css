@@ -193,3 +193,7 @@ img {
 .country-select-flag {
     display: none;
 }
+
+.avt-img {
+    width: 145px;
+}
