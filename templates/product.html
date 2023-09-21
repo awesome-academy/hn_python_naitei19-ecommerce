@@ -22,7 +22,7 @@
             <div class="product-general">
               <div class="star-rating Flex-item">
                 <ul class="list-inline">
-                  <span class="text-danger border-bottom border-danger">5.0</span>
+                  <span class="text-danger border-bottom border-danger">{{object.overall}}</span>
                   {% for i in '12345'|make_list %}
                     {% with i=i|add:"0" %}
                     {% if object.overall >= i %}
