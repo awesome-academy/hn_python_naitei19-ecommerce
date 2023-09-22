@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Item, Order, OrderItem, Coupon, User
+from .models import Item, Order, OrderItem, Coupon, User, Review
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -70,8 +70,9 @@ class CouponAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'full_name', 'last_login', 'email', 'date_joined', 'is_active']
-    
+    list_display = ['username', 'full_name',
+                    'last_login', 'email', 'date_joined', 'is_active']
+
     list_editable = ['email', 'is_active']
 
     def full_name(self, obj):
@@ -83,3 +84,4 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 admin.site.register(Coupon, CouponAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(Review)
