@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load djmoney %}
+
+{% block content %}
+<main>
+  <div class="container">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        {% if not type and type != 0 %}
+          <a class="nav-link active" aria-current="page" href="{% url 'app:order-list' %}">{% trans 'All' %}</a>
+        {% else %}
+          <a class="nav-link" href="{% url 'app:order-list' %}">{% trans 'All' %}</a>
+        {% endif %}
+      </li>
+      {% for status in order_status %}
+        <li class="nav-item">
+          {% if status.0 == type %}
+            <a class="nav-link active" aria-current="page" href="{% url 'app:order-list' %}?type={{status.0}}">{{status.1}}</a>
+          {% else %}
+            <a class="nav-link" href="{% url 'app:order-list' %}?type={{status.0}}">{{status.1}}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <caption>{% trans 'List of orders' %}</caption>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans "Ref code" %}</th>
+            <th scope="col">{% trans "Ordered date" %}</th>
+            <th scope="col">{% trans "Order total" %}</th>
+            <th scope="col">{% trans "Status" %}</th>
+            <th class="d-flex justify-content-around" scope="col">{% trans "Actions" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in object_list %}
+          <tr class="{{ order.item.slug }} clickable-row" data-href='#'>
+            <th scope="row"><a href="{% url 'app:order-detail' order.id %}">{{ forloop.counter }}</a></th>
+            <td><a href="{% url 'app:order-detail' order.id %}">{{ order.ref_code|upper }}</a></td>
+            <td><a href="{% url 'app:order-detail' order.id %}">{{ order.ordered_date|date:'Y-m-d H:i' }}</a></td>
+            <td><a href="{% url 'app:order-detail' order.id %}">{% money_localize order.total 'USD' %}</a></td>
+            <td><a href="{% url 'app:order-detail' order.id %}">{{ order.order_status.1 }}</a></td>
+            <td class="d-flex justify-content-around">
+              <a href="{% url 'app:order-detail' order.id %}" class="text-primary" data-toggle="tooltip" title="View detail">
+                <i class="fas fa-eye"></i>
+              </a>
+              {% if order.order_status.0 == CAN_CANCEL %}
+                <a href="" class="text-danger" data-toggle="tooltip" title="Cancel this order">
+                  <i class="fas fa-trash-alt"></i>
+                </a>
+              {% endif %}
+            </td>
+          {% empty %}
+          <tr>
+            <td colspan="5">{% trans "Oops, we have nothing to show." %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+{% endblock content %}

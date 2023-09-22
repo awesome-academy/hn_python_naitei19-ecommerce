@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.contrib.auth import logout
 
-from .constants import CATEGORY_CHOICES
+from .constants import CATEGORY_CHOICES, ORDER_STATUS
 from .utils import int_or_none, float_or_none, is_valid_form
 from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm
 from .models import Address, Coupon, Item, Order, OrderItem, Payment
@@ -488,3 +488,73 @@ class UserDeleteView(LoginRequiredMixin, View):
         logout(request)
         messages.success(request, _("Account has been successfully deleted."))
         return redirect('app:home')
+
+
+class OrderListView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = 'order_list.html'
+
+    def get_queryset(self):
+        filter_options = {
+            'user': self.request.user
+        }
+        type = self.request.GET.get('type')
+        if type:
+            filter_options.update(order_status=type)
+        order_list = (Order.objects.filter(**filter_options)
+                      .exclude(order_status=0)
+                      .select_related('coupon'))
+
+        result = []
+        for order in order_list:
+            result.append({
+                'id': order.id,
+                'ref_code': order.ref_code,
+                'ordered_date': order.ordered_date,
+                'order_status': ORDER_STATUS[order.order_status],
+                'total': order.amount - (order.coupon if order.coupon else 0)
+            })
+        return result
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderListView, self).get_context_data(**kwargs)
+        context['order_status'] = ORDER_STATUS[1:]
+        context['CAN_CANCEL'] = 1
+
+        type = self.request.GET.get('type')
+        context['type'] = int_or_none(type)
+
+        return context
+
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'order_detail.html'
+
+    progress = [0, 20, 60, 100]
+
+    def get_object(self):
+        try:
+            order = Order.objects.get(
+                user=self.request.user,
+                order_status__gt=0,
+                pk=self.kwargs['pk'],
+            )
+            return order
+        except ObjectDoesNotExist:
+            messages.info(self.request,
+                          _("The order does not exist or you do not have access"))
+            return redirect("app:order-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order_item = OrderItem.objects.filter(order=self.object)
+        context['order_item_list'] = order_item
+        context['order_status'] = ORDER_STATUS[1:4]
+        context['order_progress'] = self.progress[self.object.order_status]
+        context['coupon'] = self.object.coupon if self.object.coupon else 0
+        context['order_total'] = self.object.amount - context['coupon']
+        context['current_status'] = ORDER_STATUS[self.object.order_status][1]
+        if self.object.order_status == 3:
+            context['can_rate'] = True
+        return context
