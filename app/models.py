@@ -209,6 +209,18 @@ class ShopInfor(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = _("Shop Information")
+        verbose_name_plural = _("Shop Information")
+    
+    def save(self, *args, **kwargs):
+        # Check if there is an existing record
+        existing_record = ShopInfor.objects.first()
+        if existing_record:
+            # Update the existing record
+            self.pk = existing_record.pk
+        super().save(*args, **kwargs)
 
 
 class ViewHistory(models.Model):

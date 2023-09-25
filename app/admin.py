@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Item, Order, OrderItem, Coupon, User, Review
+from .models import Address, Item, Order, OrderItem, Coupon, ShopInfor, User, Review
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -78,6 +78,20 @@ class UserAdmin(admin.ModelAdmin):
     def full_name(self, obj):
         return '{} {}'.format(obj.first_name, obj.last_name)
 
+class ShopInforAdmin(admin.ModelAdmin):
+
+    list_display = ['name',
+                    'description',
+                    'address',
+                    'logo',
+                    'insta',
+                    'facebook',
+                    'youtube',
+                    ]
+    
+    # Only added when there is no data
+    def has_add_permission(self, request):
+        return not ShopInfor.objects.exists()
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
@@ -85,3 +99,5 @@ admin.site.register(OrderItem)
 admin.site.register(Coupon, CouponAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Review)
+admin.site.register(ShopInfor, ShopInforAdmin)
+admin.site.register(Address)
