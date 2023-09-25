@@ -256,7 +256,7 @@ class CheckoutView(LoginRequiredMixin, View):
             )
             if shipping_address_qs.exists():
                 context.update(
-                    {'default_shipping_address': shipping_address_qs[0]})
+                    {'default_shipping_address': shipping_address_qs.last()})
 
             billing_address_qs = Address.objects.filter(
                 user=self.request.user,
@@ -265,7 +265,7 @@ class CheckoutView(LoginRequiredMixin, View):
             )
             if billing_address_qs.exists():
                 context.update(
-                    {'default_billing_address': billing_address_qs[0]})
+                    {'default_billing_address': billing_address_qs.last()})
             return render(self.request, "checkout.html", context)
         except ObjectDoesNotExist:
             messages.info(self.request, _("You do not have an active order"))
