@@ -15,7 +15,7 @@ class User(AbstractUser):
 
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=150)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     date_joined = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
