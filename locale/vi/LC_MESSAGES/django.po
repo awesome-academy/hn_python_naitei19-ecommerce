@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-26 11:21+0700\n"
+"POT-Creation-Date: 2023-09-27 12:28+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "% Discount"
 msgstr ""
 
-#: .\app\views.py:115 .\app\views.py:271 .\app\views.py:290 .\app\views.py:416
+#: .\app\views.py:115 .\app\views.py:277 .\app\views.py:296 .\app\views.py:422
 msgid "You do not have an active order"
 msgstr ""
 
@@ -82,84 +82,140 @@ msgstr ""
 msgid "You have singed up successfully."
 msgstr ""
 
-#: .\app\views.py:171
+#: .\app\views.py:163 .\app\views.py:172
 msgid "The item was added to your cart."
 msgstr ""
 
-#: .\app\views.py:193 .\app\views.py:228
+#: .\app\views.py:199 .\app\views.py:234
 msgid "You do not have an active order."
 msgstr ""
 
-#: .\app\views.py:225
+#: .\app\views.py:231
 msgid "Item was not in your cart."
 msgstr ""
 
-#: .\app\views.py:286
+#: .\app\views.py:292
 msgid "Please fill in the required fields"
 msgstr ""
 
-#: .\app\views.py:307
+#: .\app\views.py:313
 msgid "No default shipping address available"
 msgstr ""
 
-#: .\app\views.py:335
+#: .\app\views.py:341
 msgid "Please fill in the required shipping address fields"
 msgstr ""
 
-#: .\app\views.py:351
+#: .\app\views.py:357
 msgid "No default billing address available"
 msgstr ""
 
-#: .\app\views.py:379
+#: .\app\views.py:385
 msgid "Please fill in the required billing address fields"
 msgstr ""
 
-#: .\app\views.py:387
+#: .\app\views.py:393
 msgid "Invalid payment option selected"
 msgstr ""
 
-#: .\app\views.py:398
+#: .\app\views.py:404
 msgid "This coupon does not exist"
 msgstr ""
 
-#: .\app\views.py:412
+#: .\app\views.py:418
 msgid "Successfully added coupon"
 msgstr ""
 
-#: .\app\views.py:444
+#: .\app\views.py:450
 msgid "You have not added a billing address"
 msgstr ""
 
-#: .\app\views.py:475
+#: .\app\views.py:481
 msgid "Your order was successful!"
 msgstr ""
 
-#: .\app\views.py:480
+#: .\app\views.py:486
 msgid "A serious error occurred. We have been notifed."
 msgstr ""
 
-#: .\app\views.py:483
+#: .\app\views.py:489
 msgid "Invalid data received"
 msgstr ""
 
-#: .\app\views.py:498
+#: .\app\views.py:504
 msgid "Account has been successfully deleted."
 msgstr ""
 
-#: .\app\views.py:555
+#: .\app\views.py:561 .\app\views.py:623 .\app\views.py:654
 msgid "The order does not exist or you do not have access"
 msgstr ""
 
-#: .\app\views.py:579
+#: .\app\views.py:586
 msgid "Failed to get item"
 msgstr ""
 
-#: .\app\views.py:597
+#: .\app\views.py:604
 msgid "Failed to get review"
+msgstr ""
+
+#: .\app\views.py:651
+msgid "Cancel order successfully!"
+msgstr ""
+
+#: .\app\views.py:658
+msgid "A serious error occurred. We have been notified."
 msgstr ""
 
 #: .\templates\base.html:9
 msgid "E-Commerce"
+msgstr ""
+
+#: .\templates\cancel_order.html:15
+msgid "Back"
+msgstr ""
+
+#: .\templates\cancel_order.html:20
+msgid "Order cancellation form"
+msgstr ""
+
+#: .\templates\cancel_order.html:23
+msgid "You are canceling an order:"
+msgstr ""
+
+#: .\templates\cancel_order.html:31
+msgid "Cancel reason *"
+msgstr ""
+
+#: .\templates\cancel_order.html:34
+msgid "Reason for order cancellation"
+msgstr ""
+
+#: .\templates\cancel_order.html:42
+msgid "Card number *"
+msgstr ""
+
+#: .\templates\cancel_order.html:45
+msgid "You card number"
+msgstr ""
+
+#: .\templates\cancel_order.html:50
+msgid "Name on card *"
+msgstr ""
+
+#: .\templates\cancel_order.html:53
+msgid "Enter name"
+msgstr ""
+
+#: .\templates\cancel_order.html:60
+msgid "Your email *"
+msgstr ""
+
+#: .\templates\cancel_order.html:62
+msgid "Enter email"
+msgstr ""
+
+#: .\templates\cancel_order.html:70
+msgid "Send"
 msgstr ""
 
 #: .\templates\checkout.html:11
@@ -320,19 +376,19 @@ msgstr ""
 msgid "Qty:"
 msgstr ""
 
-#: .\templates\order_detail.html:76
+#: .\templates\order_detail.html:77
 msgid "Track Order"
 msgstr ""
 
-#: .\templates\order_detail.html:100
+#: .\templates\order_detail.html:102
 msgid "Merchandise Subtotal"
 msgstr ""
 
-#: .\templates\order_detail.html:105 .\templates\order_summary.html:48
+#: .\templates\order_detail.html:107 .\templates\order_summary.html:48
 msgid "Coupon"
 msgstr ""
 
-#: .\templates\order_detail.html:115
+#: .\templates\order_detail.html:117
 msgid "Total paid:"
 msgstr ""
 
@@ -362,6 +418,10 @@ msgstr ""
 
 #: .\templates\order_list.html:36
 msgid "Actions"
+msgstr ""
+
+#: .\templates\order_list.html:52
+msgid "Cancel this order"
 msgstr ""
 
 #: .\templates\order_list.html:59
@@ -416,24 +476,40 @@ msgstr ""
 msgid "Continue shopping"
 msgstr ""
 
-#: .\templates\payment.html:10
+#: .\templates\payment.html:11
 msgid "Payment"
 msgstr ""
 
-#: .\templates\payment.html:20 .\templates\payment.html:21
+#: .\templates\payment.html:21 .\templates\payment.html:22
 msgid "Card Number"
 msgstr ""
 
-#: .\templates\payment.html:24
+#: .\templates\payment.html:25
 msgid "Expiration Date"
 msgstr ""
 
-#: .\templates\payment.html:32 .\templates\payment.html:33
+#: .\templates\payment.html:33 .\templates\payment.html:34
 msgid "Name On Card"
 msgstr ""
 
-#: .\templates\payment.html:40
+#: .\templates\payment.html:42
 msgid "Submit Payment"
+msgstr ""
+
+#: .\templates\payment.html:48
+msgid "Payment Confirmation"
+msgstr ""
+
+#: .\templates\payment.html:55
+msgid "Are you sure you want to submit the following payment?"
+msgstr ""
+
+#: .\templates\payment.html:62 .\templates\registration\profile.html:41
+msgid "Cancel"
+msgstr ""
+
+#: .\templates\payment.html:63
+msgid "Confirm"
 msgstr ""
 
 #: .\templates\product.html:51
@@ -551,10 +627,6 @@ msgstr ""
 
 #: .\templates\registration\profile.html:38
 msgid "Do you really want to delete? This process cannot be undone."
-msgstr ""
-
-#: .\templates\registration\profile.html:41
-msgid "Cancel"
 msgstr ""
 
 #: .\templates\registration\profile.html:42
