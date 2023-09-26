@@ -22,7 +22,28 @@
                     
                     <form method="post" action="{% url 'app:profile-delete' %}">
                       {% csrf_token %}
-                      <button class="btn btn-danger" type="submit btn btn-danger">{% trans "Delete My Account" %}</button>
+                        <button type="button" id="confirmButton" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">
+                          {% trans "Delete My Account" %}
+                      </button>
+                      <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">{% trans "Are you sure?" %}</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      {% trans "Do you really want to delete? This process cannot be undone." %}
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-light" data-dismiss="modal">{% trans "Cancel" %}</button>
+                                      <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                   </form>
                   </div>
                 </div>
