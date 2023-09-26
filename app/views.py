@@ -160,6 +160,7 @@ def add_to_cart(request, slug):
         if request.method == 'POST':
             return JsonResponse({'message': 'Item added to your cart.', 'quantity': order_item.quantity,
                                  'cart_total': order.amount, 'item_total': order_item.get_final_price()})
+        messages.info(request, _('The item was added to your cart.'))
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
@@ -169,7 +170,7 @@ def add_to_cart(request, slug):
         order.amount += order_item.get_single_price()
         order.save()
         messages.info(request, _('The item was added to your cart.'))
-    return redirect('app:order-summary')
+    return redirect('/')
 
 
 @login_required
@@ -186,6 +187,11 @@ def remove_from_cart(request, slug):
                     order.amount -= cart_item.get_final_price()
                     order.save()
                     cart_item.delete()
+                if (order.coupon is None):
+                    coupon = 0
+                else:
+                    coupon = order.coupon.amount
+                order.amount -= coupon
                 return JsonResponse({'message': 'Items removed from your cart.', 'cart_total': order.amount})
             else:
                 return JsonResponse({'message': 'Item was not in your cart.'})
@@ -214,7 +220,7 @@ def remove_single_item_from_cart(request, slug):
                 order.save()
                 order_item.delete()
                 return JsonResponse({'message': 'Item removed from your cart.', 'quantity': 0, 'cart_total': order.amount})
-            if (order.coupon == None):
+            if (order.coupon is None):
                 coupon = 0
             else:
                 coupon = order.coupon.amount
