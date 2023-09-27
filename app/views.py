@@ -20,7 +20,7 @@ from .utils import int_or_none, float_or_none, is_valid_form
 from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm, \
     ReviewForm
 from .models import Address, Coupon, Item, Order, OrderItem, Payment, Review, \
-    Refund
+    Refund, ViewHistory
 
 
 class HomeView(ListView):
@@ -99,6 +99,14 @@ class HomeView(ListView):
 class ItemDetailView(DetailView):
     model = Item
     template_name = "product.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        if self.request.user.is_authenticated:  # Đảm bảo user đã đăng nhập
+            context['is_liked_by_user'] = self.object.is_liked_by_user(self.request.user)
+        else:
+            context['is_liked_by_user'] = False
+        return context
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
@@ -666,3 +674,18 @@ class OrderCancellationView(LoginRequiredMixin, View):
                 _("A serious error occurred. We have been notified."))
 
         return redirect("app:order-list")
+@login_required
+@csrf_exempt
+def like_item(request):
+    liked = request.POST.get("liked")
+    slug = request.POST.get("item_slug")
+    item = get_object_or_404(Item, slug=slug)
+    try:
+        view_history = ViewHistory.objects.get(user=request.user, item=item)
+        view_history.liked = liked
+        view_history.save()
+    except ViewHistory.DoesNotExist:
+        new_like = ViewHistory.objects.create(user=request.user, item=item, liked=liked)
+        new_like.save()
+
+    return JsonResponse({"message": _("Item liked successfully")})
