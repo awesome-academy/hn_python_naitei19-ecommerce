@@ -140,6 +140,14 @@ img {
     background-color: transparent;
 }
 
+.cart_quantity {
+    left: 31px;
+    bottom: 12px;
+    position: relative;
+    z-index: 99;
+    font-size: 58%;
+}
+
 /* --------------------------------------*/
 
 
@@ -225,17 +233,21 @@ img {
 .order-card {
     border-radius: 10px;
 }
+
 .hl-text {
     color: #ee4d2d;
 }
+
 .progress-ctn {
     height: 6px;
     border-radius: 16px;
 }
+
 .pg-bar {
     border-radius: 16px;
     background-color: #ee4d2d;
 }
+
 .card-footer {
     background-color: #ee4d2d;
     border-bottom-left-radius: 10px;
