@@ -71,6 +71,7 @@
 
 
                 <!-- Tracking order -->
+                {% if order_progress %}
                 <div class="row d-flex align-items-center py-4">
                   <div class="col-md-2">
                     <p class="text-muted mb-0 small">{% trans 'Track Order' %}</p>
@@ -88,6 +89,7 @@
                     </div>
                   </div>
                 </div>
+                {% endif %}
                 <!-- End tracking order -->
 
 

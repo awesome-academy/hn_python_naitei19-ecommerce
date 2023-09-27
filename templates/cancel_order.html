@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<main>
+  <div class="container">
+    <div class="container contact-form">
+      <div class="contact-image">
+        <img src="{% static 'img/rocket-contact.png' %}"
+             alt="rocket_contact"/>
+      </div>
+      <a href="{% url 'app:order-detail' order_id %}" role="button"
+         class="px-4 mt-3 shadow-none">
+        <i class="fas fa-arrow-left"></i> {% trans 'Back' %}
+      </a>
+      <!----------------------FORM------------------>
+      <form method="post">
+        {% csrf_token %}
+        <h3>{% trans 'Order cancellation form' %}</h3>
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <span>
+            {% trans 'You are canceling an order:' %}
+            <a href="{% url 'app:order-detail' order_id %}"
+               class="lead mb-0 hl-text">{{order_ref|upper}}</a>
+          </span>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="cancel-reason">{% trans 'Cancel reason *' %}</label>
+              <textarea name="cancel_reason" id="cancel-reason"
+                        class="form-control"
+                        placeholder="{% trans 'Reason for order cancellation' %}"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="card-number">{% trans 'Card number *' %}</label>
+              <input type="number" id="card-number" name="card_number"
+                     class="form-control"
+                     placeholder="{% trans 'You card number' %}" required/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="name-on-card">{% trans 'Name on card *' %}</label>
+              <input type="text" id="name-on-card" name="name_on_card"
+                     class="form-control"
+                     placeholder="{% trans 'Enter name' %}" required/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="cancel-reason">{% trans 'Your email *' %}</label>
+              <input type="email" name="email" id="email" class="form-control"
+                     placeholder="{% trans 'Enter email' %}"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col d-flex justify-content-center">
+            <input type="submit"
+                   class="btn btn-primary px-5 mt-3 shadow-none rounded-pill text-white"
+                   value="{% trans 'Send' %}"/>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -21,5 +21,6 @@ urlpatterns = [
     path('purchase/', views.OrderListView.as_view(), name='order-list'),
     path('purchase/order/<int:pk>/',
          views.OrderDetailView.as_view(), name='order-detail'),
+    path('purchase/order/<int:pk>/cancel/', views.OrderCancellationView.as_view(), name='cancel-order'),
     path('review/<slug>/', views.review, name='review'),
 ]
