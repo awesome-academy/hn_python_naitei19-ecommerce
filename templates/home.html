@@ -58,9 +58,9 @@
               <div class="dropdown-menu price-filter-menu" aria-labelledby="dropdownStarButton">
                 <div class="dropdown-item">
                   <div class="input-group mb-3">
-                    <input name="star_from" type="number" min="1" max="5"
+                    <input name="star_from" type="number" min="0" max="5"
                            class="form-control" placeholder="{% trans 'From' %}" aria-describedby="star-from"
-                           value="star_from">
+                           value="{{star_from}}">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="star-from">
                         <i class="fas fa-star"></i>
@@ -68,8 +68,8 @@
                     </div>
                   </div>
                   <div class="input-group mb-3">
-                    <input name="star_to" type="number" min="1" max="5" class="form-control"
-                           placeholder="{% trans 'To' %}" aria-describedby="star-to" value="star_to">
+                    <input name="star_to" type="number" min="0" max="5" class="form-control"
+                           placeholder="{% trans 'To' %}" aria-describedby="star-to" value="{{star_to}}">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="star-to">
                         <i class="fas fa-star"></i>
@@ -79,7 +79,7 @@
                 </div>
               </div>
             </div>
-            <!--End price filtering-->
+            <!--End star filtering-->
 
             <!--Sorting-->
             <select name="sort" class="form-select ml-auto category-filter">
@@ -131,20 +131,23 @@
                 <a href="{{ item.get_absolute_url }}" class="dark-grey-text item-title">
                   <h7>{{ item.title }}</h7>
                 </a>
-                <div class="star-rating">
-                  <ul class="list-inline">
-                    {% for i in '12345'|make_list %}
-                      {% with i=i|add:"0" %}
-                      {% if item.overall >= i %}
-                        <li class="list-inline-item"><i class="fas fa-star"></i></li>
-                      {% elif item.round_up_overall >= i %}
-                        <li class="list-inline-item"><i class="fas fa-star-half-alt"></i></li>
-                      {% else %}
-                        <li class="list-inline-item"><i class="far fa-star"></i></li>
-                      {% endif %}
-                      {% endwith %}
-                    {% endfor %}
-                  </ul>
+                <div class="d-flex justify-content-around mt-3">
+                  <div class="star-rating">
+                    <ul class="list-inline">
+                      {% for i in '12345'|make_list %}
+                        {% with i=i|add:"0" %}
+                        {% if item.overall >= i %}
+                          <li class="list-inline-item mr-0"><i class="fas fa-star"></i></li>
+                        {% elif item.round_up_overall >= i %}
+                          <li class="list-inline-item mr-0"><i class="fas fa-star-half-alt"></i></li>
+                        {% else %}
+                          <li class="list-inline-item mr-0"><i class="far fa-star"></i></li>
+                        {% endif %}
+                        {% endwith %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="ml-3">{{item.purchases}} {% trans 'sold' %}</div>
                 </div>
                 <p class="item-price">
                   {% if item.discount_price %}

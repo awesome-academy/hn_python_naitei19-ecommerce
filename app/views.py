@@ -13,11 +13,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.contrib.auth import logout
+from django.db.models.functions import Coalesce
 
 from .constants import CATEGORY_CHOICES, ORDER_STATUS
 from .utils import int_or_none, float_or_none, is_valid_form
-from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm, ReviewForm
-from .models import Address, Coupon, Item, Order, OrderItem, Payment, Review, Refund
+from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm, \
+    ReviewForm
+from .models import Address, Coupon, Item, Order, OrderItem, Payment, Review, \
+    Refund
 
 
 class HomeView(ListView):
@@ -32,10 +35,12 @@ class HomeView(ListView):
             'text': _('% Discount'),
             'func': lambda x: (x.discount_price if x.discount_price else x.price)/x.price * 100 - 100}
     ]
-    def DEFAULT_SORT(x): return -x.overall
+
+    def DEFAULT_SORT(x):
+        return -x.overall
 
     model = Item
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
         params = self.request.GET
@@ -51,9 +56,9 @@ class HomeView(ListView):
         if category_option:
             filter_options.update(category=category_option)
         if price_from:
-            filter_options.update(price__gte=price_from)
+            filter_options.update(current_price__gte=price_from)
         if price_to:
-            filter_options.update(price__lte=price_to)
+            filter_options.update(current_price__lte=price_to)
         if star_from:
             filter_options.update(overall__gte=star_from)
         if star_to:
@@ -65,7 +70,9 @@ class HomeView(ListView):
         if sort:
             sort_option = self.SORT_CHOICES[int(sort)]['func']
 
-        result = Item.objects.filter(**filter_options)
+        result = (Item.objects
+                  .annotate(current_price=Coalesce('discount_price', 'price'))
+                  .filter(**filter_options))
         result = sorted(result, key=sort_option)
 
         return result
@@ -527,7 +534,8 @@ class OrderListView(LoginRequiredMixin, ListView):
                 'ref_code': order.ref_code,
                 'ordered_date': order.ordered_date,
                 'order_status': ORDER_STATUS[order.order_status],
-                'total': order.amount - (order.coupon if order.coupon else 0)
+                'total': order.amount - (
+                    order.coupon.amount if order.coupon else 0)
             })
         return result
 
@@ -568,7 +576,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         context['order_status'] = ORDER_STATUS[1:4]
         if self.object.order_status != 4:
             context['order_progress'] = self.progress[self.object.order_status]
-        context['coupon'] = self.object.coupon if self.object.coupon else 0
+        context['coupon'] = self.object.coupon.amount if self.object.coupon else 0
         context['order_total'] = self.object.amount - context['coupon']
         context['current_status'] = ORDER_STATUS[self.object.order_status][1]
         if self.object.order_status == 3:
