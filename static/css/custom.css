@@ -205,6 +205,13 @@ img {
     white-space: nowrap;
 }
 
+.product-card-title{
+    font-weight: 500;
+    line-height: 1.5rem;
+    font-size: 1.25rem;
+    overflow-wrap: break-word;
+}
+
 /* --------------------------------------*/
 
 .btn-link {

@@ -217,11 +217,11 @@ class ShopInfor(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name = _("Shop Information")
         verbose_name_plural = _("Shop Information")
-    
+
     def save(self, *args, **kwargs):
         # Check if there is an existing record
         existing_record = ShopInfor.objects.first()
@@ -249,6 +249,7 @@ class Review(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     description = models.CharField(max_length=1023)
     overall = models.IntegerField()
+    date_reviewed = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user.username}: {self.item.title} - {self.overall} star'
