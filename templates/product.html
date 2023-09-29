@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
 
@@ -52,10 +53,23 @@
 
             <p>{{ object.description }}</p>
 
-            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary rounded-pill btn-lg mt-3">
-              {% trans "Add to Cart" %}
-              <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
+            
+            <div class="d-flex align-items-center" data-like-url="{% url 'app:like_item' %}">
+              <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary rounded-pill btn-lg mt-3">
+                {% trans "Add to Cart" %}
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+              {% if request.user.is_authenticated  %}
+                {% if is_liked_by_user %}
+                  <a class="like-button text-danger liked m-3 h4" data-item-slug="{{ object.slug }}">{% trans "Liked " %}<i class="fas fa-thumbs-up m-1"></i></a>
+                {% else %}
+                  <a class="like-button m-3 h4" data-item-slug="{{ object.slug }}">{% trans "Like " %}<i class="fas fa-thumbs-up m-1"></i></a>
+                {% endif %}
+              {% else %}
+                <a class="text-muted m-3 h5" href="{% url 'login' %}?next=/product/{{object.slug}}">{% trans "Login to Like " %}<i class="fas fa-thumbs-up"></i></a>
+              {% endif %}
+              </div>
+            
           </div>
         </div>
         <!--Product infor-->
@@ -75,4 +89,6 @@
     </div>
   </main>
 
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/like_handler.js' %}"></script>
 {% endblock content %}

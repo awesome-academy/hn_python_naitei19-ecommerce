@@ -116,7 +116,15 @@ class Item(models.Model):
         return reverse("app:remove-single-item-from-cart", kwargs={
             'slug': self.slug
         })
-
+    
+    def is_liked_by_user(self, user):
+        """Check if the item is liked by the given user."""
+        try:
+            # Kiểm tra xem có bản ghi trong bảng ViewHistory tương ứng với item và user này không
+            view_history = ViewHistory.objects.get(user=user, item=self)
+            return view_history.liked
+        except ViewHistory.DoesNotExist:
+            return False
 
 class Order(models.Model):
     """Model representing an order."""

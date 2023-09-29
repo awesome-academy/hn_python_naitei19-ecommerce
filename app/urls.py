@@ -23,4 +23,5 @@ urlpatterns = [
          views.OrderDetailView.as_view(), name='order-detail'),
     path('purchase/order/<int:pk>/cancel/', views.OrderCancellationView.as_view(), name='cancel-order'),
     path('review/<slug>/', views.review, name='review'),
+    path('like_item/', views.like_item, name='like_item'),
 ]
