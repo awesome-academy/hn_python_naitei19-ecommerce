@@ -99,13 +99,16 @@ class HomeView(ListView):
 class ItemDetailView(DetailView):
     model = Item
     template_name = "product.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
         if self.request.user.is_authenticated:  # Đảm bảo user đã đăng nhập
-            context['is_liked_by_user'] = self.object.is_liked_by_user(self.request.user)
+            context['is_liked_by_user'] = self.object.is_liked_by_user(
+                self.request.user)
         else:
             context['is_liked_by_user'] = False
+        review = Review.objects.filter(item=self.object)
+        context['review'] = review
         return context
 
 
@@ -598,23 +601,14 @@ def review(request, slug):
         form = ReviewForm()
         item = get_object_or_404(Item, slug=slug)
         return render(request, 'review.html', {'form': form, 'item': item})
-    else:
-        messages.info(request, _('Failed to get item'))
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         rating = request.POST.get('rating')
         description = request.POST.get('review')
         item = get_object_or_404(Item, slug=slug)
-        review_query = Review.objects.filter(
-            user=request.user, item=item).first()
-        if (review_query):
-            review_query.description = description
-            review_query.overall = rating
-            review_query.save()
-        else:
-            new_review = Review.objects.create(
-                user=request.user, item=item, description=description, overall=rating)
-            new_review.save()
+        new_review = Review.objects.create(
+            user=request.user, item=item, description=description, overall=rating)
+        new_review.save()
         return redirect('/')
     else:
         messages.info(request, _('Failed to get review'))
@@ -674,6 +668,8 @@ class OrderCancellationView(LoginRequiredMixin, View):
                 _("A serious error occurred. We have been notified."))
 
         return redirect("app:order-list")
+
+
 @login_required
 @csrf_exempt
 def like_item(request):
@@ -685,7 +681,8 @@ def like_item(request):
         view_history.liked = liked
         view_history.save()
     except ViewHistory.DoesNotExist:
-        new_like = ViewHistory.objects.create(user=request.user, item=item, liked=liked)
+        new_like = ViewHistory.objects.create(
+            user=request.user, item=item, liked=liked)
         new_like.save()
 
     return JsonResponse({"message": _("Item liked successfully")})

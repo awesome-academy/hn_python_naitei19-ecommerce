@@ -5,55 +5,66 @@
 
 {% block content %}
 
-  <main class="mt-3 pt-2">
-    <div class="container dark-grey-text mt-5 bg-white p-3">
-      <div class="row wow fadeIn">
-        <!--Product image-->
-        <div class="col-md-6 mb-4">
-          <img src="{{object.image.url}}" class="img-fluid" alt="">
-        </div>
-        <!--Product image-->
+<main class="mt-3 pt-2">
+  <div class="container dark-grey-text mt-5 bg-white p-3">
+    <div class="row wow fadeIn">
+      <!--Product image-->
+      <div class="col-md-6 mb-4">
+        <img src="{{object.image.url}}" class="img-fluid" alt="" />
+      </div>
+      <!--Product image-->
 
-        <!--Product infor-->
-        <div class="col-md-6 mb-4 product-detail">
-          <div class="p-4">
-            <div class="product-title mb-3">
-              <span>{{object.title}}</span>
-            </div>
-            <div class="product-general">
-              <div class="star-rating Flex-item">
-                <ul class="list-inline">
-                  <span class="text-danger border-bottom border-danger">{{object.overall}}</span>
-                  {% for i in '12345'|make_list %}
-                    {% with i=i|add:"0" %}
+      <!--Product infor-->
+      <div class="col-md-6 mb-4 product-detail">
+        <div class="p-4">
+          <div class="product-title mb-3">
+            <span>{{object.title}}</span>
+          </div>
+          <div class="product-general">
+            <div class="star-rating Flex-item">
+              <ul class="list-inline">
+                <span class="text-danger border-bottom border-danger"
+                  >{{object.overall}}</span>
+                {% for i in '12345'|make_list %} 
+                  {% with i=i|add:"0" %} 
                     {% if object.overall >= i %}
-                      <li class="list-inline-item m-0"><i class="fas fa-star"></i></li>
+                    <li class="list-inline-item m-0">
+                      <i class="fas fa-star"></i>
+                    </li>
                     {% elif object.round_up_overall >= i %}
-                      <li class="list-inline-item m-0"><i class="fas fa-star-half-alt"></i></li>
+                    <li class="list-inline-item m-0">
+                      <i class="fas fa-star-half-alt"></i>
+                    </li>
                     {% else %}
-                      <li class="list-inline-item m-0"><i class="far fa-star"></i></li>
-                    {% endif %}
-                    {% endwith %}
-                  {% endfor %}
-                </ul>
-              </div>
-              <div class="purchases Flex-item">{{object.purchases}} Sold</div>
+                    <li class="list-inline-item m-0">
+                      <i class="far fa-star"></i>
+                    </li>
+                    {% endif %} 
+                  {% endwith %} 
+                {% endfor %}
+              </ul>
             </div>
-            <p class="product-price">
-              {% if object.discount_price %}
-              <del class="product-price_before">{% trans "$" %}{{ object.price|floatformat:"0"|intcomma }}</del>
-              <b class="product-price_current">{% trans "$" %}{{ object.discount_price|floatformat:"0"|intcomma }}</b>
-              {% else %}
-              <b class="product-price_current">{% trans "$" %}{{ object.price|floatformat:"0"|intcomma }}</b>
-              {% endif %}
-              <span class="sale-percent">{{object.discount_percent|floatformat:"0"}}% OFF</span>
-            </p>
-
-            <p class="lead font-weight-bold">{% trans "Description" %}</p>
-
-            <p>{{ object.description }}</p>
-
-            
+            <div class="purchases Flex-item">{{object.purchases}} {% trans "Sold" %}</div>
+          </div>
+          <p class="product-price">
+            {% if object.discount_price %}
+            <del class="product-price_before"
+              >{% trans "$" %}{{ object.price|floatformat:"0"|intcomma }}</del
+            >
+            <b class="product-price_current"
+              >{% trans "$"%}{{object.discount_price|floatformat:"0"|intcomma}}</b
+            >
+            {% else %}
+            <b class="product-price_current"
+              >{% trans "$" %}{{ object.price|floatformat:"0"|intcomma }}</b
+            >
+            {% endif %}
+            <span class="sale-percent"
+              >{{object.discount_percent|floatformat:"0"}}{% trans "% OFF" %}</span
+            >
+          </p>
+          <p class="lead font-weight-bold">{% trans "Description" %}</p>
+          <p>{{ object.description }}</p>
             <div class="d-flex align-items-center" data-like-url="{% url 'app:like_item' %}">
               <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary rounded-pill btn-lg mt-3">
                 {% trans "Add to Cart" %}
@@ -69,25 +80,65 @@
                 <a class="text-muted m-3 h5" href="{% url 'login' %}?next=/product/{{object.slug}}">{% trans "Login to Like " %}<i class="fas fa-thumbs-up"></i></a>
               {% endif %}
               </div>
-            
+        </div>
+      </div>
+      <!--Product infor-->
+    </div>
+
+    <hr />
+
+    <!--Product rating-->
+    <div class="row d-flex justify-content-center wow fadeIn">
+      <div class="col-md-6 text-center">
+        <h4 class="my-4 h4">{% trans "Product Ratings" %}</h4>
+      </div>
+      <div class="container">
+        <div class="row d-block">
+          <div class="text-dark">
+            {% for review_item in review reversed%}
+            <div class="card-body p-4">
+              <div class="d-flex flex-start">
+                <div>
+                  <h6 class="fw-bold product-card-title mb-1">
+                    {{ review_item.user.username }}
+                  </h6>
+                  <div class="d-flex align-items-center mb-3">
+                    <p class="mb-0">{{ review_item.date_reviewed }}</p>
+                  </div>
+                  <div class="star-rating">
+                    <ul class="list-inline">
+                      {% for i in '12345'|make_list %} 
+                        {% with i=i|add:"0" %} 
+                          {% if review_item.overall >= i %}
+                          <li class="list-inline-item m-0">
+                            <i class="fas fa-star"></i>
+                          </li>
+                          {% elif review_item.round_up_overall >= i %}
+                          <li class="list-inline-item m-0">
+                            <i class="fas fa-star-half-alt"></i>
+                          </li>
+                          {% else %}
+                          <li class="list-inline-item m-0">
+                            <i class="far fa-star"></i>
+                          </li>
+                          {% endif %} 
+                        {% endwith %} 
+                      {% endfor %}
+                    </ul>
+                    <p class="mb-0">{{review_item.description}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            {% endfor %}
+          </div>
           </div>
         </div>
-        <!--Product infor-->
       </div>
-
-
-      <hr>
-
-
-      <!--Product rating-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-        <div class="col-md-6 text-center">
-          <h4 class="my-4 h4">{% trans "Product Ratings" %}</h4>
-        </div>
-      </div>
-
     </div>
-  </main>
+  </div>
+</main>
 
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/like_handler.js' %}"></script>
