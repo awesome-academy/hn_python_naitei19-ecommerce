@@ -1,12 +1,17 @@
 {% load i18n %}
+{% load static %}
 {% load cart_template_tags %}
 
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
   <div class="container">
 
     <!-- Brand -->
-    <a class="navbar-brand waves-effect" href="/">
-      <strong class="blue-text">E-commerce</strong>
+    <a class="navbar-brand waves-effect d-flex align-items-center mr-5" href="/">
+      <div class="navbar-brand mr-3">
+        <img src="{% static 'img/logo.png' %}" alt="" width="40" height="40">
+      </div>
+      <strong class="blue-text fs-1">Catmart</strong>
+      <i class="fas fa-asterisk text-warning mb-2"></i>
     </a>
 
     <!-- Collapse -->
