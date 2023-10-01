@@ -29,10 +29,9 @@ ORDER_STATUS = (
 )
 
 REFUND_STATUS = (
-    (0, 'None'),
-    (1, 'Pending'),
-    (2, 'Approved'),
-    (3, 'Cancelled')
+    (0, 'Pending'),
+    (1, 'Accepted'),
+    (2, 'Rejected')
 )
 
 PAYMENT_STATUS = (

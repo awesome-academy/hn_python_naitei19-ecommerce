@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Address, Item, Order, OrderItem, Coupon, ShopInfor, User, Review
+from .models import Address, Item, Order, OrderItem, Coupon, Refund, ShopInfor, User, Review
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -44,12 +44,11 @@ class OrderAdmin(admin.ModelAdmin):
                     'billing_address',
                     'payment',
                     'order_status',
-                    'refund_status',
                     'coupon',
                     ]
 
     list_editable = ['order_status',
-                     'refund_status']
+                    ]
 
     search_fields = [
         'user__username',

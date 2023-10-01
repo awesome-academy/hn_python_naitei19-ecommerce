@@ -22,12 +22,24 @@
                   <span>
                     {% trans 'Order status:' %}
                     <p class="lead fw-normal mb-0 hl-text">{{current_status}}</p>
+                    {% if can_refund %}
+                      <a href="{% url 'app:refund-order' order.id %}" class="ml-0 btn btn-danger btn-sm" role="button">{% trans "Refund request" %}</a>
+                    {% endif %}
+                    {% if can_cancel %}
+                      <a href="{% url 'app:cancel-order' order.id %}" class="ml-0 btn btn-danger btn-sm" role="button">{% trans "Cancel this order" %}</a>
+                    {% endif %}
                   </span>
                   <p class="small text-muted mb-0">{% trans 'Order ref:' %} {{object.ref_code|upper}}</p>
                 </div>
                 <!-- End order ref -->
-
-
+                {% if refund_requested %}
+                  <!-- <div class="d-flex justify-content-between align-items-center mb-4"> -->
+                  <div class="d-inline-block">
+                    {% trans 'Refund status:' %}
+                    <p class="lead fw-normal mb-0 hl-text">{{refund_status}}</p>
+                    <p>{% trans 'Reason: ' %}{{ refund_reason }}</p>
+                  </div>
+                {% endif %}
                 <!-- Item list -->
                 {% for order_item in order_item_list %}
                 <div class="card shadow-0 border mb-4">

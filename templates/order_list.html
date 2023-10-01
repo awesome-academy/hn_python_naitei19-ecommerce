@@ -43,7 +43,11 @@
             <td><a href="{% url 'app:order-detail' order.id %}">{{ order.ref_code|upper }}</a></td>
             <td><a href="{% url 'app:order-detail' order.id %}">{{ order.ordered_date|date:'Y-m-d H:i' }}</a></td>
             <td><a href="{% url 'app:order-detail' order.id %}">{% money_localize order.total 'USD' %}</a></td>
-            <td><a href="{% url 'app:order-detail' order.id %}">{{ order.order_status.1 }}</a></td>
+            {% if order.order_status.0 == 3 and not order.can_refund %}
+              <td><a href="{% url 'app:order-detail' order.id %}">Refund {{ order.refund_status.1 }}</a></td>
+            {% else %}
+              <td><a href="{% url 'app:order-detail' order.id %}">{{ order.order_status.1 }}</a></td>
+            {% endif %}
             <td class="d-flex justify-content-around">
               <a href="{% url 'app:order-detail' order.id %}" class="text-primary" data-toggle="tooltip" title="View detail">
                 <i class="fas fa-eye"></i>
@@ -51,6 +55,11 @@
               {% if order.order_status.0 == CAN_CANCEL %}
                 <a href="{% url 'app:cancel-order' order.id %}" class="text-danger" data-toggle="tooltip" title="{% trans 'Cancel this order' %}">
                   <i class="fas fa-trash-alt"></i>
+                </a>
+              {% endif %}
+              {% if order.can_refund %}
+                <a href="{% url 'app:refund-order' order.id %}" class="text-danger" data-toggle="tooltip" title="{% trans 'Refund request' %}">
+                  <i class="fas fa-undo"></i>
                 </a>
               {% endif %}
             </td>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-27 14:15+0700\n"
+"POT-Creation-Date: 2023-10-01 13:26+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,119 +62,120 @@ msgstr ""
 msgid "Shop Information"
 msgstr ""
 
-#: .\app\views.py:26
+#: .\app\views.py:29
 msgid "Price: low to high"
 msgstr ""
 
-#: .\app\views.py:29
+#: .\app\views.py:32
 msgid "Price: high to low"
 msgstr ""
 
-#: .\app\views.py:32
+#: .\app\views.py:35
 msgid "% Discount"
 msgstr ""
 
-#: .\app\views.py:123 .\app\views.py:285 .\app\views.py:304 .\app\views.py:430
+#: .\app\views.py:133 .\app\views.py:295 .\app\views.py:314 .\app\views.py:440
 msgid "You do not have an active order"
 msgstr ""
 
-#: .\app\views.py:137
+#: .\app\views.py:147
 msgid "You have singed up successfully."
 msgstr ""
 
-#: .\app\views.py:171 .\app\views.py:180
+#: .\app\views.py:181 .\app\views.py:190
 msgid "The item was added to your cart."
 msgstr ""
 
-#: .\app\views.py:207 .\app\views.py:242
+#: .\app\views.py:217 .\app\views.py:252
 msgid "You do not have an active order."
 msgstr ""
 
-#: .\app\views.py:239
+#: .\app\views.py:249
 msgid "Item was not in your cart."
 msgstr ""
 
-#: .\app\views.py:300
+#: .\app\views.py:310
 msgid "Please fill in the required fields"
 msgstr ""
 
-#: .\app\views.py:321
+#: .\app\views.py:331
 msgid "No default shipping address available"
 msgstr ""
 
-#: .\app\views.py:349
+#: .\app\views.py:359
 msgid "Please fill in the required shipping address fields"
 msgstr ""
 
-#: .\app\views.py:365
+#: .\app\views.py:375
 msgid "No default billing address available"
 msgstr ""
 
-#: .\app\views.py:393
+#: .\app\views.py:403
 msgid "Please fill in the required billing address fields"
 msgstr ""
 
-#: .\app\views.py:401
+#: .\app\views.py:411
 msgid "Invalid payment option selected"
 msgstr ""
 
-#: .\app\views.py:412
+#: .\app\views.py:422
 msgid "This coupon does not exist"
 msgstr ""
 
-#: .\app\views.py:426
+#: .\app\views.py:436
 msgid "Successfully added coupon"
 msgstr ""
 
-#: .\app\views.py:458
+#: .\app\views.py:468
 msgid "You have not added a billing address"
 msgstr ""
 
-#: .\app\views.py:489
+#: .\app\views.py:499
 msgid "Your order was successful!"
 msgstr ""
 
-#: .\app\views.py:494
+#: .\app\views.py:504
 msgid "A serious error occurred. We have been notifed."
 msgstr ""
 
-#: .\app\views.py:497
+#: .\app\views.py:507
 msgid "Invalid data received"
 msgstr ""
 
-#: .\app\views.py:512
+#: .\app\views.py:522
 msgid "Account has been successfully deleted."
 msgstr ""
 
-#: .\app\views.py:569 .\app\views.py:631 .\app\views.py:662
+#: .\app\views.py:589 .\app\views.py:660 .\app\views.py:689 .\app\views.py:731
+#: .\app\views.py:757
 msgid "The order does not exist or you do not have access"
 msgstr ""
 
-#: .\app\views.py:594
-msgid "Failed to get item"
-msgstr ""
-
-#: .\app\views.py:612
+#: .\app\views.py:640
 msgid "Failed to get review"
 msgstr ""
 
-#: .\app\views.py:659
+#: .\app\views.py:686
 msgid "Cancel order successfully!"
 msgstr ""
 
-#: .\app\views.py:666
+#: .\app\views.py:693 .\app\views.py:761
 msgid "A serious error occurred. We have been notified."
 msgstr ""
 
-#: .\app\views.py:683
+#: .\app\views.py:713
 msgid "Item liked successfully"
+msgstr ""
+
+#: .\app\views.py:754
+msgid "Refund request successfully!"
 msgstr ""
 
 #: .\templates\base.html:9
 msgid "E-Commerce"
 msgstr ""
 
-#: .\templates\cancel_order.html:15
+#: .\templates\cancel_order.html:15 .\templates\refund_request.html:15
 msgid "Back"
 msgstr ""
 
@@ -194,7 +195,7 @@ msgstr ""
 msgid "Reason for order cancellation"
 msgstr ""
 
-#: .\templates\cancel_order.html:42
+#: .\templates\cancel_order.html:42 .\templates\refund_request.html:42
 msgid "Card number *"
 msgstr ""
 
@@ -202,23 +203,23 @@ msgstr ""
 msgid "You card number"
 msgstr ""
 
-#: .\templates\cancel_order.html:50
+#: .\templates\cancel_order.html:50 .\templates\refund_request.html:50
 msgid "Name on card *"
 msgstr ""
 
-#: .\templates\cancel_order.html:53
+#: .\templates\cancel_order.html:53 .\templates\refund_request.html:53
 msgid "Enter name"
 msgstr ""
 
-#: .\templates\cancel_order.html:60
+#: .\templates\cancel_order.html:60 .\templates\refund_request.html:60
 msgid "Your email *"
 msgstr ""
 
-#: .\templates\cancel_order.html:62
+#: .\templates\cancel_order.html:62 .\templates\refund_request.html:62
 msgid "Enter email"
 msgstr ""
 
-#: .\templates\cancel_order.html:70
+#: .\templates\cancel_order.html:70 .\templates\refund_request.html:79
 msgid "Send"
 msgstr ""
 
@@ -322,21 +323,25 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: .\templates\home.html:151 .\templates\home.html:152
-#: .\templates\home.html:154 .\templates\product.html:43
-#: .\templates\product.html:44 .\templates\product.html:46
+#: .\templates\home.html:150
+msgid "sold"
+msgstr ""
+
+#: .\templates\home.html:154 .\templates\home.html:155
+#: .\templates\home.html:157 .\templates\product.html:52
+#: .\templates\product.html:55 .\templates\product.html:59
 msgid "$"
 msgstr ""
 
-#: .\templates\home.html:157 .\templates\product.html:58
+#: .\templates\home.html:160 .\templates\product.html:70
 msgid "Add to Cart"
 msgstr ""
 
-#: .\templates\home.html:176
+#: .\templates\home.html:179
 msgid "Previous"
 msgstr ""
 
-#: .\templates\home.html:191
+#: .\templates\home.html:194
 msgid "Next"
 msgstr ""
 
@@ -372,27 +377,43 @@ msgstr ""
 msgid "Order status:"
 msgstr ""
 
-#: .\templates\order_detail.html:26
+#: .\templates\order_detail.html:26 .\templates\order_list.html:57
+msgid "Refund request"
+msgstr ""
+
+#: .\templates\order_detail.html:29 .\templates\order_list.html:52
+msgid "Cancel this order"
+msgstr ""
+
+#: .\templates\order_detail.html:32
 msgid "Order ref:"
 msgstr ""
 
-#: .\templates\order_detail.html:55
+#: .\templates\order_detail.html:38
+msgid "Refund status:"
+msgstr ""
+
+#: .\templates\order_detail.html:40
+msgid "Reason: "
+msgstr ""
+
+#: .\templates\order_detail.html:67
 msgid "Qty:"
 msgstr ""
 
-#: .\templates\order_detail.html:77
+#: .\templates\order_detail.html:89
 msgid "Track Order"
 msgstr ""
 
-#: .\templates\order_detail.html:102
+#: .\templates\order_detail.html:114
 msgid "Merchandise Subtotal"
 msgstr ""
 
-#: .\templates\order_detail.html:107 .\templates\order_summary.html:48
+#: .\templates\order_detail.html:119 .\templates\order_summary.html:48
 msgid "Coupon"
 msgstr ""
 
-#: .\templates\order_detail.html:117
+#: .\templates\order_detail.html:129
 msgid "Total paid:"
 msgstr ""
 
@@ -424,11 +445,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: .\templates\order_list.html:52
-msgid "Cancel this order"
-msgstr ""
-
-#: .\templates\order_list.html:59
+#: .\templates\order_list.html:64
 msgid "Oops, we have nothing to show."
 msgstr ""
 
@@ -516,24 +533,57 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: .\templates\product.html:51
-msgid "Description"
+#: .\templates\product.html:47
+msgid "Sold"
 msgstr ""
 
 #: .\templates\product.html:63
+#, python-format
+msgid "%% OFF"
+msgstr ""
+
+#: .\templates\product.html:66
+msgid "Description"
+msgstr ""
+
+#: .\templates\product.html:75
 msgid "Liked "
 msgstr ""
 
-#: .\templates\product.html:65
+#: .\templates\product.html:77
 msgid "Like "
 msgstr ""
 
-#: .\templates\product.html:68
+#: .\templates\product.html:80
 msgid "Login to Like "
 msgstr ""
 
-#: .\templates\product.html:84
+#: .\templates\product.html:93
 msgid "Product Ratings"
+msgstr ""
+
+#: .\templates\refund_request.html:20
+msgid "Refund request form"
+msgstr ""
+
+#: .\templates\refund_request.html:23
+msgid "You are requesting to return your order:"
+msgstr ""
+
+#: .\templates\refund_request.html:31
+msgid "Refund reason *"
+msgstr ""
+
+#: .\templates\refund_request.html:34
+msgid "Reason for refund request"
+msgstr ""
+
+#: .\templates\refund_request.html:69
+msgid "Upload image *"
+msgstr ""
+
+#: .\templates\refund_request.html:71
+msgid "Upload image"
 msgstr ""
 
 #: .\templates\registration\login.html:21
