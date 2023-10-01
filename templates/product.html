@@ -59,13 +59,13 @@
               >{% trans "$" %}{{ object.price|floatformat:"0"|intcomma }}</b
             >
             {% endif %}
-            <span class="sale-percent"
-              >{{object.discount_percent|floatformat:"0"}}{% trans "% OFF" %}</span
-            >
+            {% if object.discount_price %}
+              <span class="sale-percent">{{object.discount_percent|floatformat:"0"}}{% trans "% OFF" %}</span>
+            {% endif %}
           </p>
           <p class="lead font-weight-bold">{% trans "Description" %}</p>
           <p>{{ object.description }}</p>
-            <div class="d-flex align-items-center" data-like-url="{% url 'app:like_item' %}">
+            <div class="d-flex align-items-center" data-like-url="{% url 'app:like_item' %}" id="data-like-url">
               <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary rounded-pill btn-lg mt-3">
                 {% trans "Add to Cart" %}
                 <i class="fas fa-shopping-cart ml-1"></i>

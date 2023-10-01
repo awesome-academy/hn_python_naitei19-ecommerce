@@ -1,0 +1,45 @@
+{% load i18n %}
+
+<div class="pagination_rounded d-flex justify-content-center">
+  <ul>
+    {% with pre_end=page_obj.paginator.num_pages|add:"-2" %}
+    {% if page_obj.has_previous %}
+      <li>
+        <a href="?page={{page_obj.previous_page_number}}" class="prev">
+          <i class="fa fa-angle-left" aria-hidden="true"></i> {% trans "Prev" %}
+        </a>
+      </li>
+    {% endif %}
+    {% if page_obj.number != 1 %}
+      <li><a href="?page=1">1</a></li>
+    {% endif %}
+    {% if page_obj.number > 4 %}
+      <li>...</li>
+    {% elif page_obj.number == 4 %}
+      <li><a href="?page=2">2</a></li>
+    {% endif %}
+    {% if page_obj.number >= 3 %}
+      <li><a href="?page={{page_obj.previous_page_number}}">{{page_obj.previous_page_number}}</a></li>
+    {% endif %}
+    <li><a class="bg-primary text-white" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+    {% if page_obj.number < page_obj.paginator.num_pages %}
+      <li><a href="?page={{page_obj.next_page_number}}">{{page_obj.next_page_number}}</a></li>
+    {% endif %}
+    {% if page_obj.next_page_number < pre_end %}
+      <li>...</li>
+    {% elif page_obj.next_page_number == pre_end %}
+      <li><a href="?page={{page_obj.paginator.num_pages|add:"-1"}}">{{page_obj.paginator.num_pages|add:"-1"}}</a></li>
+    {% endif %}
+    {% if page_obj.next_page_number < page_obj.paginator.num_pages %}
+      <li><a href="?page={{page_obj.paginator.num_pages}}">{{page_obj.paginator.num_pages}}</a></li>
+    {% endif %}
+    {% if page_obj.has_next %}
+      <li>
+        <a href="?page={{ page_obj.next_page_number }}" class="next">
+          {% trans "Next" %} <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% endwith %}
+  </ul>
+</div>

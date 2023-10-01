@@ -183,6 +183,8 @@ class OrderItem(models.Model):
         return self.quantity * self.item.discount_price
 
     def get_amount_saved(self):
+        if self.item.discount_price is None:
+            return 0
         return (self.item.price - self.item.discount_price) * self.quantity
 
     def get_final_price(self):
