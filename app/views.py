@@ -188,7 +188,7 @@ def add_to_cart(request, slug):
         order.amount += order_item.get_single_price()
         order.save()
         messages.info(request, _('The item was added to your cart.'))
-    return redirect('/')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -693,3 +693,17 @@ def like_item(request):
         new_like.save()
 
     return JsonResponse({"message": _("Item liked successfully")})
+
+class LikedView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            view_history = ViewHistory.objects.filter(user=self.request.user, liked=True)
+            context = {
+                'object_list': view_history,
+            }
+            return render(self.request, 'liked.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, _(
+                "You do not have any liked products"))
+            return redirect("/")
+
