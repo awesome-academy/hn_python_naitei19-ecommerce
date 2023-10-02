@@ -432,4 +432,7 @@ img {
     text-align: center;
     color: #0062cc;
 }
+.modal-dialog {
+    top : 50px
+}
 /* -------------------------------------------------*/

@@ -471,6 +471,7 @@ class PaymentView(LoginRequiredMixin, View):
     @transaction.atomic
     def post(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, order_status=0)
+        order_items = OrderItem.objects.filter(order=order)
         form = PaymentForm(self.request.POST)
         if form.is_valid():
             card_number = form.cleaned_data.get('card_number')
@@ -495,6 +496,12 @@ class PaymentView(LoginRequiredMixin, View):
                     order.payment = payment
                     order.ref_code = create_ref_code()
                     order.save()
+
+                    #update purchases of item
+                    for order_item in order_items:
+                        item = order_item.item
+                        item.purchases += order_item.quantity
+                        item.save()
 
                 messages.success(self.request, _("Your order was successful!"))
                 return redirect("/")
