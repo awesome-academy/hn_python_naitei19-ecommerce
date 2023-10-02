@@ -33,6 +33,9 @@
   <div class="main">
     {% block content %}
     {% endblock content %}
+    {% if is_paginated %}
+      {% include "pagination.html" %}
+    {% endif %}
   </div>
     {% include "footer.html" %}
     {% include "scripts.html" %}

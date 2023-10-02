@@ -3,7 +3,7 @@ $(document).ready(function() {
       var itemSlug = $(this).data("item-slug");
       var likeButton = $(this); // Lưu trữ nút "like" vào biến để dễ thao tác
       var liked = likeButton.hasClass("liked");
-      var likeUrl = $(".d-flex").data("like-url");
+      var likeUrl = $("#data-like-url").data("like-url");
       // Gửi yêu cầu POST để xử lý yêu thích
       $.ajax({
         type: "POST",

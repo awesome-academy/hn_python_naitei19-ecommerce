@@ -90,6 +90,7 @@ class HomeView(ListView):
         context['star_to'] = float_or_none(params.get('star_to'))
         context['sort'] = int_or_none(params.get('sort'))
         context['product_name'] = params.get('name')
+        context['nbar'] = 'home'
 
         return context
 
@@ -533,6 +534,7 @@ class UserDeleteView(LoginRequiredMixin, View):
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order_list.html'
+    paginate_by = 12
 
     def get_queryset(self):
         filter_options = {
@@ -543,7 +545,8 @@ class OrderListView(LoginRequiredMixin, ListView):
             filter_options.update(order_status=type)
         order_list = (Order.objects.filter(**filter_options)
                       .exclude(order_status=0)
-                      .select_related('coupon'))
+                      .select_related('coupon')
+                      .order_by('timestamp'))
 
         result = []
         for order in order_list:
@@ -561,6 +564,7 @@ class OrderListView(LoginRequiredMixin, ListView):
         context = super(OrderListView, self).get_context_data(**kwargs)
         context['order_status'] = ORDER_STATUS[1:]
         context['CAN_CANCEL'] = 1
+        context['nbar'] = 'order'
 
         type = self.request.GET.get('type')
         context['type'] = int_or_none(type)
@@ -592,6 +596,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         order_item = OrderItem.objects.filter(order=self.object)
         context['order_item_list'] = order_item
         context['order_status'] = ORDER_STATUS[1:4]
+        context['nbar'] = 'order'
         if self.object.order_status != 4:
             context['order_progress'] = self.progress[self.object.order_status]
         context['coupon'] = self.object.coupon.amount if self.object.coupon else 0
