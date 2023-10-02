@@ -15,7 +15,7 @@ from django.db import transaction
 from django.contrib.auth import logout
 from django.db.models.functions import Coalesce
 
-from .constants import CATEGORY_CHOICES, ORDER_STATUS
+from .constants import CATEGORY_CHOICES, ORDER_STATUS, REFUND_STATUS
 from .utils import int_or_none, float_or_none, is_valid_form
 from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm, \
     ReviewForm
@@ -550,13 +550,25 @@ class OrderListView(LoginRequiredMixin, ListView):
 
         result = []
         for order in order_list:
+            can_refund = False
+            refund_status = -1
+            if order.order_status == 3 :
+                try:
+                    refund = Refund.objects.get(order=order)
+                    refund_status = refund.refund_status
+                    can_refund = False
+                except Refund.DoesNotExist:
+                    can_refund = True
+            
             result.append({
                 'id': order.id,
                 'ref_code': order.ref_code,
                 'ordered_date': order.ordered_date,
                 'order_status': ORDER_STATUS[order.order_status],
                 'total': order.amount - (
-                    order.coupon.amount if order.coupon else 0)
+                    order.coupon.amount if order.coupon else 0),
+                'can_refund' : can_refund,
+                'refund_status' : REFUND_STATUS[refund_status]
             })
         return result
 
@@ -604,6 +616,17 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         context['current_status'] = ORDER_STATUS[self.object.order_status][1]
         if self.object.order_status == 3:
             context['can_rate'] = True
+            try:
+                refund = Refund.objects.get(order=self.object)
+                context['can_refund'] = False
+                context['refund_requested'] = True
+                context['refund_status'] = REFUND_STATUS[refund.refund_status][1]
+                context['refund_reason'] = refund.reason
+            except Refund.DoesNotExist:
+                context['can_refund'] = True
+
+        if self.object.order_status == 1:
+            context['can_cancel'] = True
         return context
 
 
@@ -637,7 +660,8 @@ class OrderCancellationView(LoginRequiredMixin, View):
             )
             context = {
                 'order_id': order.id,
-                'order_ref': order.ref_code
+                'order_ref': order.ref_code,
+                'card_number' : order.payment.card_number
             }
             return render(self.request, 'cancel_order.html', context)
         except ObjectDoesNotExist:
@@ -661,12 +685,10 @@ class OrderCancellationView(LoginRequiredMixin, View):
                     order=order,
                     reason=params.get('cancel_reason'),
                     email=params.get('email'),
-                    accepted=True
+                    refund_status = 1
                 )
 
                 order.order_status = 4
-                order.refund_status = 2
-
                 order.save()
 
                 messages.info(self.request,
@@ -712,3 +734,52 @@ class LikedView(LoginRequiredMixin, View):
                 "You do not have any liked products"))
             return redirect("/")
 
+class RefundRequestView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(
+                user=self.request.user,
+                order_status=3,
+                pk=self.kwargs['pk']
+            )
+            context = {
+                'order_id': order.id,
+                'order_ref': order.ref_code,
+                'card_number' : order.payment.card_number
+            }
+            return render(self.request, 'refund_request.html', context)
+        except ObjectDoesNotExist:
+            messages.info(self.request,
+                          _("The order does not exist or you do not have access"))
+            return redirect("app:order-list")
+
+    def post(self, *args, **kwargs):
+        # TODO refund
+        try:
+            with transaction.atomic():
+                params = self.request.POST
+
+                order = Order.objects.get(
+                    user=self.request.user,
+                    order_status=3,
+                    pk=self.kwargs['pk']
+                )
+
+                Refund.objects.create(
+                    order=order,
+                    reason=params.get('reason'),
+                    email=params.get('email'),
+                    image=self.request.FILES.get('image'),
+                )
+
+                messages.info(self.request,
+                              _("Refund request successfully!"))
+        except ObjectDoesNotExist:
+            messages.info(self.request,
+                          _("The order does not exist or you do not have access"))
+        except Exception:
+            messages.warning(
+                self.request,
+                _("A serious error occurred. We have been notified."))
+
+        return redirect("app:order-list")

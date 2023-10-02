@@ -135,8 +135,6 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     order_status = models.IntegerField(choices=const.ORDER_STATUS,
                                        default=0)
-    refund_status = models.IntegerField(choices=const.REFUND_STATUS,
-                                        default=0)
     coupon = models.ForeignKey(
         Coupon, on_delete=models.SET_NULL, blank=True, null=True)
     shipping_address = models.ForeignKey(
@@ -198,8 +196,10 @@ class Refund(models.Model):
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     reason = models.TextField()
-    accepted = models.BooleanField(default=False)
     email = models.EmailField()
+    refund_status = models.IntegerField(choices=const.REFUND_STATUS,
+                                        default=0)
+    image = models.ImageField()
 
     def __str__(self):
         return f"{self.pk}"
