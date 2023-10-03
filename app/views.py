@@ -584,7 +584,7 @@ class OrderListView(LoginRequiredMixin, ListView):
         for order in order_list:
             can_refund = False
             refund_status = -1
-            if order.order_status == 3 :
+            if order.order_status == 3:
                 try:
                     refund = Refund.objects.get(order=order)
                     refund_status = refund.refund_status
@@ -599,8 +599,8 @@ class OrderListView(LoginRequiredMixin, ListView):
                 'order_status': ORDER_STATUS[order.order_status],
                 'total': order.amount - (
                     order.coupon.amount if order.coupon else 0),
-                'can_refund' : can_refund,
-                'refund_status' : REFUND_STATUS[refund_status]
+                'can_refund': can_refund,
+                'refund_status': REFUND_STATUS[refund_status]
             })
         return result
 
@@ -676,6 +676,13 @@ def review(request, slug):
         new_review = Review.objects.create(
             user=request.user, item=item, description=description, overall=rating)
         new_review.save()
+        sum = 0
+        total_review = Review.objects.filter(item=item)
+        for each_review in total_review:
+            sum += each_review.overall
+            new_overall = sum / total_review.count()
+            item.overall = new_overall
+            item.save()
         return redirect('/')
     else:
         messages.info(request, _('Failed to get review'))
@@ -693,7 +700,7 @@ class OrderCancellationView(LoginRequiredMixin, View):
             context = {
                 'order_id': order.id,
                 'order_ref': order.ref_code,
-                'card_number' : order.payment.card_number
+                'card_number': order.payment.card_number
             }
             return render(self.request, 'cancel_order.html', context)
         except ObjectDoesNotExist:
@@ -717,7 +724,7 @@ class OrderCancellationView(LoginRequiredMixin, View):
                     order=order,
                     reason=params.get('cancel_reason'),
                     email=params.get('email'),
-                    refund_status = 1
+                    refund_status=1
                 )
 
                 order.order_status = 4
@@ -753,10 +760,12 @@ def like_item(request):
 
     return JsonResponse({"message": _("Item liked successfully")})
 
+
 class LikedView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         try:
-            view_history = ViewHistory.objects.filter(user=self.request.user, liked=True)
+            view_history = ViewHistory.objects.filter(
+                user=self.request.user, liked=True)
             context = {
                 'object_list': view_history,
             }
@@ -765,6 +774,7 @@ class LikedView(LoginRequiredMixin, View):
             messages.warning(self.request, _(
                 "You do not have any liked products"))
             return redirect("/")
+
 
 class RefundRequestView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
@@ -777,7 +787,7 @@ class RefundRequestView(LoginRequiredMixin, View):
             context = {
                 'order_id': order.id,
                 'order_ref': order.ref_code,
-                'card_number' : order.payment.card_number
+                'card_number': order.payment.card_number
             }
             return render(self.request, 'refund_request.html', context)
         except ObjectDoesNotExist:
