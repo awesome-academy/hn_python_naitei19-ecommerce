@@ -1,7 +1,10 @@
 import random
 import string
+from functools import lru_cache
+from email.mime.image import MIMEImage
+
 from django.views.generic import ListView, DetailView, View
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
@@ -14,9 +17,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.contrib.auth import logout
 from django.db.models.functions import Coalesce
+from django.contrib.staticfiles import finders
 
 from .constants import CATEGORY_CHOICES, ORDER_STATUS, REFUND_STATUS
-from .utils import int_or_none, float_or_none, is_valid_form
+from .utils import int_or_none, float_or_none, is_valid_form, send_email
 from .forms import RegisterForm, CheckoutForm, CouponForm, PaymentForm, \
     ReviewForm
 from .models import Address, Coupon, Item, Order, OrderItem, Payment, Review, \
@@ -498,22 +502,50 @@ class PaymentView(LoginRequiredMixin, View):
                     order.ref_code = create_ref_code()
                     order.save()
 
-                    #update purchases of item
+                    # update purchases of item
                     for order_item in order_items:
                         item = order_item.item
                         item.purchases += order_item.quantity
                         item.save()
 
+                    # send email to user
+                    send_email(
+                        subject=_(f'You have placed your order {order.ref_code.upper()} successfully'),
+                        body=_(f'You have placed your order {order.ref_code.upper()} successfully'),
+                        to=[self.request.user.email],
+                        template='order_success.html',
+                        attachment=logo_data(),
+                        context={
+                            'username': self.request.user.username,
+                            'ref_code': order.ref_code.upper(),
+                            'ordered_date': order.ordered_date,
+                            'order_url': self.request.build_absolute_uri(
+                                reverse("app:order-detail",
+                                        kwargs={'pk': order.id})
+                            )
+                        }
+                    )
+
                 messages.success(self.request, _("Your order was successful!"))
                 return redirect("/")
 
             except Exception as e:
+                print(e)
                 messages.warning(
                     self.request, _("A serious error occurred. We have been notifed."))
                 return redirect("/")
 
         messages.warning(self.request, _("Invalid data received"))
         return redirect("/payment/card/")
+
+
+@lru_cache()
+def logo_data():
+    with open(finders.find('img/cat.png'), 'rb') as f:
+        data = f.read()
+    logo = MIMEImage(data)
+    logo.add_header('Content-ID', '<logo>')
+    return logo
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -559,7 +591,7 @@ class OrderListView(LoginRequiredMixin, ListView):
                     can_refund = False
                 except Refund.DoesNotExist:
                     can_refund = True
-            
+
             result.append({
                 'id': order.id,
                 'ref_code': order.ref_code,

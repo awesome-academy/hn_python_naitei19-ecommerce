@@ -1,0 +1,50 @@
+{% load i18n %}
+<head>
+  <style>
+    .container {
+      display: inline;
+    }
+    .img {
+      width: 140px;
+      height: auto
+    }
+    .img-container {
+      display: flex;
+      justify-content: center;
+      margin: auto;
+      width: 60%
+    }
+    .content-container {
+      width: 60%;
+      margin: auto;
+      margin-top: 30px;
+      font-size: 17px
+    }
+    .code {
+      color: #ee4d2d
+    }
+  </style>
+</head>
+<div class="container">
+  <div class="img-container">
+    <div>
+      <img src="cid:logo" class="img"
+           alt="{% trans 'This photo has a very cute cat, unfortunately you can not see him' %}">
+    </div>
+  </div>
+  <div class="content-container">
+    <strong>{% trans 'Hello' %} {{username}}, </strong>
+    <p>{% trans 'You have successfully placed an order ' %}
+      <span class="code">{{ref_code}}</span> {% trans 'at' %} {{ordered_date|date:'Y-m-d H:i'}}.
+      {% trans 'Please wait about 3 to 4 days to receive the goods!' %}
+    </p>
+    <p>
+      {% trans 'You can track delivery progress here:' %}
+      <a href="{{order_url}}">{% trans 'Delivery tracking' %}</a>
+    </p>
+    <br>
+    {% blocktranslate %}
+    <p id="test">Best regards,<br>VD-NA-GN team.</p>
+    {% endblocktranslate %}
+  </div>
+</div>
