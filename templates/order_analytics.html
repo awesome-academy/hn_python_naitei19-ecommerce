@@ -1,0 +1,27 @@
+{% extends 'admin/base_site.html' %} {% load static %} {% load i18n %} 
+{% block nav-global %}
+<a href="/admin/app/order">{%trans "Show Orders Data" %}</a>
+{% endblock nav-global %} {% block content %}
+<script>
+  var order_count = {% autoescape off %}{{ data.order_count_data }}{% endautoescape %};
+  document.addEventListener("DOMContentLoaded", function () {
+    const chart = Highcharts.chart("order-chart", {
+      chart: {
+        type: "pie",
+      },
+      title: {
+        text: "Order analytics",
+      },
+      series: [{
+        name: "Order count",
+        data: order_count
+      }],
+    });
+  });
+</script>
+
+<script src="{% static 'js/highcharts.js' %}"></script>
+
+<div id="order-chart" style="width: 70%; height: 400px; margin: 0 auto"></div>
+
+{% endblock content %}

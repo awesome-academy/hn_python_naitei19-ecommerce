@@ -1,0 +1,65 @@
+{% extends 'admin/base_site.html' %} 
+{% load static %} 
+{% load i18n %} 
+{% block nav-global %}
+  <a href="/admin/app/item">{%trans "Show Items Data" %}</a>
+{% endblock nav-global %} 
+{% block content %}
+<script>
+  var categories = {% autoescape off %}{{ data.categories }}{% endautoescape %};
+  var items_count = {% autoescape off %}{{ data.items_count }}{% endautoescape %};
+  var items_sale = {% autoescape off %}{{ data.items_sale }}{% endautoescape %};
+  document.addEventListener('DOMContentLoaded', function () {
+      const chart = Highcharts.chart('quantity-chart', {
+          chart: {
+              type: 'column',
+          },
+          title: {
+              text: 'Items analytics'
+          },
+          xAxis: {
+            categories: ['Type of items']
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: 'Quantity'
+            }
+          },
+          series: items_count
+          });
+
+          const chart2 = Highcharts.chart('sale-chart-2', {
+            chart: {
+                type: 'column',
+            },
+            title: {
+                text: 'Sales analytics'
+            },
+            xAxis: {
+              categories: ['Purchases']
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: 'Quantity'
+              }
+            },
+            series: items_sale
+            })
+      });
+</script>
+
+<script src="{% static 'js/highcharts.js' %}"></script>
+
+<div
+  id="quantity-chart"
+  style="width: 70%; height: 400px; margin: 0 auto"
+></div>
+
+<div
+  id="sale-chart-2"
+  style="width: 70%; height: 400px; margin: 4rem auto"
+></div>
+
+{% endblock content %}
