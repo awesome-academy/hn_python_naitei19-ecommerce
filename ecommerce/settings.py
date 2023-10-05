@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'djmoney',
-    'app.apps.AppConfig'
+    'app.apps.AppConfig',
+    'import_export'
 ]
 
 MIDDLEWARE = [
